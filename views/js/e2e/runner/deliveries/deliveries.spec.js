@@ -16,14 +16,14 @@
  * Copyright (c) 2019 (original work) Open Assessment Technologies SA ;
  */
 
- import runnerSelectors from '../_selectors/runnerSelectors';
+import runnerSelectors from '../_selectors/runnerSelectors';
 
- import '../_setup/setupCommands';
- import '../_routes/runnerRoutes';
- import '../_cleanup/cleanupCommands';
+import '../_setup/setupCommands';
+import '../_routes/runnerRoutes';
+import '../_cleanup/cleanupCommands';
 
 describe('Deliveries', () => {
-   
+
     /**
      * Setup to have a proper delivery:
      * - Start server
