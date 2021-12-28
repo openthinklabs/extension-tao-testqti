@@ -57,18 +57,56 @@
     }
   },
   "minimum-stability": "dev",
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "git@github.com:openthinklabs/lib-test-cat.git"
+    },
+    {
+      "type": "vcs",
+      "url": "git@github.com:openthinklabs/oatbox-extension-installer.git"
+    },
+    {
+      "type": "vcs",
+      "url": "git@github.com:openthinklabs/generis.git"
+    },
+    {
+      "type": "vcs",
+      "url": "git@github.com:openthinklabs/tao-core.git"
+    },
+    {
+      "type": "vcs",
+      "url": "git@github.com:openthinklabs/extension-tao-item.git"
+    },
+    {
+      "type": "vcs",
+      "url": "git@github.com:openthinklabs/extension-tao-itemqti.git"
+    },
+    {
+      "type": "vcs",
+      "url": "git@github.com:openthinklabs/extension-tao-test.git"
+    },
+    {
+      "type": "vcs",
+      "url": "git@github.com:openthinklabs/extension-tao-delivery.git"
+    },
+    {
+      "type": "vcs",
+      "url": "git@github.com:openthinklabs/extension-tao-outcome.git"
+    }                                
+  ],
   "require": {
     "ext-dom": "*",
-    "oat-sa/lib-test-cat": "2.3.7",
-    "oat-sa/oatbox-extension-installer": "~1.1||dev-master",
+    "openthinklabs/lib-test-cat": "2.3.7",
+    "openthinklabs/oatbox-extension-installer": "~1.1||dev-master",
     "qtism/qtism": "^0.25.0",
-    "oat-sa/generis" : ">=15.5.0",
-    "oat-sa/tao-core" : ">=48.39.0",
-    "oat-sa/extension-tao-item" : ">=11.0.0",
-    "oat-sa/extension-tao-itemqti" : ">=28.30.0",
-    "oat-sa/extension-tao-test" : ">=15.0.0",
-    "oat-sa/extension-tao-delivery" : ">=15.0.0",
-    "oat-sa/extension-tao-outcome" : ">=13.0.0"
+    "openthinklabs/generis" : ">=15.5.0",
+    "openthinklabs/tao-core" : ">=48.39.0",
+    "openthinklabs/extension-tao-item" : ">=11.0.0",
+    "openthinklabs/extension-tao-itemqti" : ">=28.30.0",
+    "openthinklabs/extension-tao-test" : ">=15.0.0",
+    "openthinklabs/extension-tao-delivery" : ">=15.0.0",
+    "openthinklabs/extension-tao-outcome" : ">=13.0.0"
   },
   "autoload": {
     "psr-4": {
