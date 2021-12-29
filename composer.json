@@ -93,13 +93,17 @@
     {
       "type": "vcs",
       "url": "git@github.com:openthinklabs/extension-tao-outcome.git"
-    }                                
+    },
+    {
+      "type": "vcs",
+      "url": "git@github.com:openthinklabs/qti-sdk.git"
+    }                                       
   ],
   "require": {
     "ext-dom": "*",
     "openthinklabs/lib-test-cat": "2.3.7.2",
     "openthinklabs/oatbox-extension-installer": "~1.1||dev-master",
-    "qtism/qtism": "^0.25.0",
+    "qtism/qtism": "0.25.1.1",
     "openthinklabs/generis" : ">=15.5.0",
     "openthinklabs/tao-core" : ">=48.39.0",
     "openthinklabs/extension-tao-item" : ">=11.0.0",
