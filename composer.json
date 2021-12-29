@@ -97,7 +97,7 @@
   ],
   "require": {
     "ext-dom": "*",
-    "openthinklabs/lib-test-cat": "2.3.7",
+    "openthinklabs/lib-test-cat": "2.3.7.2",
     "openthinklabs/oatbox-extension-installer": "~1.1||dev-master",
     "qtism/qtism": "^0.25.0",
     "openthinklabs/generis" : ">=15.5.0",
