@@ -103,7 +103,7 @@
     "ext-dom": "*",
     "openthinklabs/lib-test-cat": "2.3.7.2",
     "openthinklabs/oatbox-extension-installer": "~1.1||dev-master",
-    "openthinklabs/qtism": "0.25.1.2",
+    "openthinklabs/qtism": "0.25.1.3",
     "openthinklabs/generis" : ">=15.5.0",
     "openthinklabs/tao-core" : ">=48.39.0",
     "openthinklabs/extension-tao-item" : ">=11.0.0",
