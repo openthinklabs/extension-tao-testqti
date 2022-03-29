@@ -28,7 +28,7 @@ return new oat\oatbox\config\ConfigurationService(array(
         'test-taker-review-item-title' => 'Item %d',
         'test-taker-review-force-informational-title' => false,
         'test-taker-review-informational-item-title' => 'Instructions',
-        'test-taker-review-scope' => 'test',
+        'test-taker-review-scope' => 'testSection',
         'test-taker-review-prevents-unseen' => true,
         'test-taker-review-can-collapse' => false,
         'test-taker-review-display-subsection-title' => true,
@@ -36,7 +36,7 @@ return new oat\oatbox\config\ConfigurationService(array(
         'test-taker-unanswered-items-message' => true,
         'exitButton' => true,
         'next-section' => false,
-        'reset-timer-after-resume' => false,
+        'reset-timer-after-resume' => true,
         'extraContextBuilder' => null,
         'plugins' => array(
             'answer-masking' => array(
