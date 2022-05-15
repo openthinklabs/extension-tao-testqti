@@ -1,6 +1,8 @@
 <div id="{{identifier}}" class="testpart clearfix">
-
-   <h1><span data-bind="identifier">{{identifier}}</span>
+   <h1>
+   <a href="#" class="toggler opened" data-toggle="#testpart-content-{{identifier}}"></a>
+   <span data-bind="identifier">{{identifier}}</span>
+       <span class="icon-warning"></span>
         <div class="actions">
             <div class="tlb">
                 <div class="tlb-top">
@@ -21,14 +23,13 @@
                 </div>
             </div>
         </div>
-        <a href="#" class="toggler opened" data-toggle="#testpart-content-{{identifier}}"></a>
     </h1>
     <div id="testpart-content-{{identifier}}" class="testpart-content">
 
        <!-- assessmentTest/testPart/assessmentSections -->
        <div class="sections" data-bind-each="assessmentSections" data-bind-tmpl="section" data-bind-filter="isSection"></div>
 
-        <button class="btn-info small section-adder" data-testid="add-section">
+        <button class="btn-info small section-adder button-add" data-testid="add-section">
             <span class="icon-add"></span>
             {{__ 'New section'}}
         </button>

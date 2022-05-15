@@ -8,7 +8,7 @@
   },
   "license": "GPL-2.0",
   "dependencies": {
-    "@oat-sa/tao-test-runner": "0.8.1",
-    "@oat-sa/tao-test-runner-qti": "git+https://github.com/openthinklabs/tao-test-runner-qti-fe#v2.27.0.3"
+    "@oat-sa/tao-test-runner": "0.8.2",
+    "@oat-sa/tao-test-runner-qti":  "git+https://github.com/openthinklabs/tao-test-runner-qti-fe#v2.28.4.1"
   }
 }

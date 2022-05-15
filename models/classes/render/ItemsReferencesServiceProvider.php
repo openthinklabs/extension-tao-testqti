@@ -23,6 +23,7 @@ namespace oat\taoQtiTest\models\render;
 
 use oat\generis\model\DependencyInjection\ContainerServiceProviderInterface;
 use oat\taoItems\model\render\ItemAssetsReplacement;
+use oat\taoQtiTest\models\classes\render\CustomInteraction\CustomInteractionPostProcessorAllocator;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
@@ -39,8 +40,8 @@ class ItemsReferencesServiceProvider implements ContainerServiceProviderInterfac
             ->args(
                 [
                     service(ItemAssetsReplacement::SERVICE_ID),
+                    service(CustomInteractionPostProcessorAllocator::class)
                 ]
             );
     }
-
 }

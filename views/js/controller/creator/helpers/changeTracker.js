@@ -25,14 +25,16 @@ define([
     'i18n',
     'lib/uuid',
     'core/eventifier',
-    'ui/dialog'
+    'ui/dialog',
+    'ui/feedback',
 ], function (
     $,
     _,
     __,
     uuid,
     eventifier,
-    dialog
+    dialog,
+    feedback
 ) {
     'use strict';
 
@@ -42,8 +44,36 @@ define([
     const messages = {
         preview: __('The test needs to be saved before it can be previewed.'),
         leave: __('The test has unsaved changes, are you sure you want to leave?'),
-        exit: __('The test has unsaved changes, would you like to save it?')
+        exit: __('The test has unsaved changes, would you like to save it?'),
+        leaveWhenInvalid: __('If you leave the test, your changes will not be saved due to invalid test settings. Are you sure you wish to leave?')
     };
+    const buttonsYesNo = [{
+        id: 'dontsave',
+        type: 'regular',
+        label: __('YES'),
+        close: true
+    }, {
+        id: 'cancel',
+        type: 'regular',
+        label: __('NO'),
+        close: true
+    }];
+    const buttonsCancelSave = [{
+        id: 'dontsave',
+        type: 'regular',
+        label: __('Don\'t save'),
+        close: true
+    }, {
+        id: 'cancel',
+        type: 'regular',
+        label: __('Cancel'),
+        close: true
+    }, {
+        id: 'save',
+        type: 'info',
+        label: __('Save'),
+        close: true
+    }];
 
     /**
      *
@@ -98,28 +128,48 @@ define([
                 // every click outside the authoring
                 $(wrapperSelector)
                     .on(`click${eventNS}`, e => {
-                        if (!$.contains(container, e.target) && this.hasChanged()) {
+                        if (!$.contains(container, e.target) && this.hasChanged() && e.target.classList[0] !== 'icon-close') {
                             e.stopImmediatePropagation();
                             e.preventDefault();
 
-                            this.confirmBefore('exit')
-                                .then(whatToDo => {
-                                    this.ifWantSave(whatToDo);
-                                    this.uninstall();
-                                    e.target.click();
-                                })
-                                //do nothing but prevent uncaught error
-                                .catch(() => {});
+                            if (testCreator.isTestHasErrors()) {
+                                this.confirmBefore('leaveWhenInvalid')
+                                    .then(whatToDo => {
+                                        this.ifWantSave(whatToDo);
+                                        this.uninstall();
+                                        e.target.click();
+                                    })
+                                    .catch(() => {});
+                            } else {
+                                this.confirmBefore('exit')
+                                    .then(whatToDo => {
+                                        this.ifWantSave(whatToDo);
+                                        this.uninstall();
+                                        e.target.click();
+                                    })
+                                    //do nothing but prevent uncaught error
+                                    .catch(() => {});
+                            }
                         }
                     });
 
                 testCreator
                     .on(`ready${eventNS} saved${eventNS}`, () => this.init())
-                    .before(`creatorclose${eventNS}`, () => this.confirmBefore('exit').then(whatToDo => {
-                        this.ifWantSave(whatToDo);
-                    }))
+                    .before(`creatorclose${eventNS}`, () => {
+                        let leavingStatus = 'leave';
+                        if(testCreator.isTestHasErrors()) {
+                            leavingStatus ='leaveWhenInvalid';
+                        }
+                        return this.confirmBefore(leavingStatus).then(whatToDo => {
+                            this.ifWantSave(whatToDo);
+                        })})
                     .before(`preview${eventNS}`, () => this.confirmBefore('preview').then(whatToDo => {
+                        if(testCreator.isTestHasErrors()){
+                            feedback().warning(`${__('The test cannot be saved because it currently contains invalid settings.\n' +
+                                'Please fix the invalid settings and try again.')}`);
+                        } else {
                         this.ifWantSave(whatToDo);
+                        }
                     }))
                     .before(`exit${eventNS}`, () => this.uninstall());
 
@@ -175,35 +225,36 @@ define([
                     }
 
                     asking = true;
+                    let confirmDlg;
 
-                    const confirmDlg = dialog({
-                        message: message,
-                        buttons: [{
-                            id: 'dontsave',
-                            type: 'regular',
-                            label: __('Don\'t save'),
-                            close: true
-                        }, {
-                            id: 'cancel',
-                            type: 'regular',
-                            label: __('Cancel'),
-                            close: true
-                        }, {
-                            id: 'save',
-                            type: 'info',
-                            label: __('Save'),
-                            close: true
-                        }],
-                        autoRender: true,
-                        autoDestroy: true,
-                        onSaveBtn: () => resolve({ ifWantSave: true }),
-                        onDontsaveBtn: () => resolve({ ifWantSave: false }),
-                        onCancelBtn: () => {
-                            confirmDlg.hide();
-                            reject({ cancel: true });
-                        }
-                    })
-                    .on('closed.modal', () => asking = false);
+                    // chosses what buttons to display depending on the message
+                    if(message === messages.leaveWhenInvalid) {
+                        confirmDlg = dialog({
+                            message: message,
+                            buttons: buttonsYesNo,
+                            autoRender: true,
+                            autoDestroy: true,
+                            onDontsaveBtn: () => resolve({ ifWantSave: false }),
+                            onCancelBtn: () => {
+                                confirmDlg.hide();
+                                reject({ cancel: true });
+                            }
+                        });
+                    } else {
+                        confirmDlg = dialog({
+                           message: message,
+                           buttons: buttonsCancelSave,
+                           autoRender: true,
+                           autoDestroy: true,
+                           onSaveBtn: () => resolve({ ifWantSave: true }),
+                           onDontsaveBtn: () => resolve({ ifWantSave: false }),
+                           onCancelBtn: () => {
+                               confirmDlg.hide();
+                               reject({ cancel: true });
+                           }
+                      });
+                    }
+                    confirmDlg.on('closed.modal', () => asking = false);
                 });
             },
 

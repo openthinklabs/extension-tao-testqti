@@ -35,6 +35,7 @@
             </ul>
         </div>
         <h1><span data-bind="title"></span>
+            <span class="icon-warning"></span>
             <div class="actions">
                 <div class="tlb">
                     <div class="tlb-top">
@@ -55,7 +56,7 @@
         </h1>
         <div class="test-content">
             <div class="testparts" data-bind-each="testParts" data-bind-tmpl="testpart"> </div>
-            <button class="btn-info small testpart-adder" data-testid="add-test-part">
+            <button class="btn-info small testpart-adder button-add" data-testid="add-test-part">
                 <span class="icon-add"></span><?=__('New test part')?>
             </button>
         </div>
