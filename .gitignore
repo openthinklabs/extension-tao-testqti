@@ -7,3 +7,11 @@ var/
 phpunit.xml
 node_modules
 .idea
+generis/
+tao/
+taoBackOffice/
+taoDelivery/
+taoItems/
+taoQtiItem/
+taoResultServer/
+taoTests/
