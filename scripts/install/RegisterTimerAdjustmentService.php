@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,7 +20,7 @@
 
 namespace oat\taoQtiTest\scripts\install;
 
-use common_exception;
+use common_Exception;
 use oat\oatbox\extension\InstallAction;
 use oat\taoQtiTest\models\runner\time\TimerAdjustmentService;
 use oat\taoQtiTest\models\runner\time\TimerAdjustmentServiceInterface;
@@ -28,7 +29,7 @@ class RegisterTimerAdjustmentService extends InstallAction
 {
     /**
      * @param $params
-     * @throws common_exception
+     * @throws common_Exception
      */
     public function __invoke($params)
     {

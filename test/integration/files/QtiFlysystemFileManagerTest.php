@@ -35,7 +35,9 @@ class QtiFlysystemFileManagerTest extends GenerisPhpUnitTestRunner
     public function setUp(): void
     {
         $this->serviceLocator = ServiceManager::getServiceManager();
-        $this->filesystem = $this->serviceLocator->get(FileSystemService::SERVICE_ID)->getFileSystem('taoQtiTestSessionFilesystem');
+        $this->filesystem = $this->serviceLocator
+            ->get(FileSystemService::SERVICE_ID)
+            ->getFileSystem('taoQtiTestSessionFilesystem');
         $this->fileManager = new QtiFlysystemFileManager();
         $this->fileManager->setFilePrefix('unittest');
         $this->fileManager->setServiceLocator($this->serviceLocator);
@@ -51,7 +53,7 @@ class QtiFlysystemFileManagerTest extends GenerisPhpUnitTestRunner
     public function cleanUp()
     {
         foreach ($this->filesystem->listContents('/', true) as $file) {
-            $basename = $file['basename'];
+            $basename = basename($file['path']);
             if (strpos($basename, 'unittest') !== false) {
                 $this->filesystem->delete($file['path']);
             }

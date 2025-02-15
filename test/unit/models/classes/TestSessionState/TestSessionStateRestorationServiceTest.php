@@ -20,9 +20,8 @@
 
 declare(strict_types=1);
 
-
-use League\Flysystem\FileNotFoundException;
 use oat\oatbox\extension\AbstractAction;
+use oat\oatbox\filesystem\FilesystemException;
 use oat\tao\model\state\StateMigration;
 use oat\tao\model\taskQueue\QueueDispatcher;
 use oat\taoDelivery\model\execution\DeliveryExecution;
@@ -84,7 +83,7 @@ class TestSessionStateRestorationServiceTest extends TestCase
         $deliveryExecution->expects(self::once())->method('getUserIdentifier')
             ->willReturn(Uuid::uuid4()->toString());
         $this->stateMigrationMock->expects(self::once())->method('restore')
-            ->willThrowException(new FileNotFoundException(''));
+            ->willThrowException(new FilesystemException(''));
 
         $this->expectException(RestorationImpossibleException::class);
         $this->subject->restore($deliveryExecution);
@@ -137,10 +136,58 @@ class TestSessionStateRestorationServiceTest extends TestCase
         $assessmentSection2->setSectionParts($sectionPart);
 
         return [
-            [2, 1, new AssessmentTest('a1.', '', new TestPartCollection([new TestPart('a1.', new AssessmentSectionCollection([$assessmentSection1]))]))],
-            [4, 2, new AssessmentTest('a1.', '', new TestPartCollection([new TestPart('a1.', new AssessmentSectionCollection([$assessmentSection1, $assessmentSection2]))]))],
-            [4, 2, new AssessmentTest('a1.', '', new TestPartCollection([new TestPart('a1.', new AssessmentSectionCollection([$assessmentSection1])), new TestPart('a2.', new AssessmentSectionCollection([$assessmentSection2]))]))],
-            [6, 3, new AssessmentTest('a1.', '', new TestPartCollection([new TestPart('a1.', new AssessmentSectionCollection([$assessmentSection1, $assessmentSection2])), new TestPart('a2.', new AssessmentSectionCollection([$assessmentSection1]))]))],
+            [
+                2,
+                1,
+                new AssessmentTest(
+                    'a1.',
+                    '',
+                    new TestPartCollection([
+                        new TestPart('a1.', new AssessmentSectionCollection([$assessmentSection1]))
+                    ])
+                ),
+            ],
+            [
+                4,
+                2,
+                new AssessmentTest(
+                    'a1.',
+                    '',
+                    new TestPartCollection([
+                        new TestPart(
+                            'a1.',
+                            new AssessmentSectionCollection([$assessmentSection1, $assessmentSection2])
+                        )
+                    ])
+                ),
+            ],
+            [
+                4,
+                2,
+                new AssessmentTest(
+                    'a1.',
+                    '',
+                    new TestPartCollection([
+                        new TestPart('a1.', new AssessmentSectionCollection([$assessmentSection1])),
+                        new TestPart('a2.', new AssessmentSectionCollection([$assessmentSection2]))
+                    ])
+                ),
+            ],
+            [
+                6,
+                3,
+                new AssessmentTest(
+                    'a1.',
+                    '',
+                    new TestPartCollection([
+                        new TestPart(
+                            'a1.',
+                            new AssessmentSectionCollection([$assessmentSection1, $assessmentSection2])
+                        ),
+                        new TestPart('a2.', new AssessmentSectionCollection([$assessmentSection1]))
+                    ])
+                ),
+            ],
         ];
     }
 }

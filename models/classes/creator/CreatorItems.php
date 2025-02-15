@@ -23,7 +23,10 @@ namespace oat\taoQtiTest\models\creator;
 
 use oat\generis\model\OntologyAwareTrait;
 use oat\oatbox\service\ConfigurableService;
+use oat\tao\model\featureFlag\FeatureFlagChecker;
+use oat\tao\model\featureFlag\FeatureFlagCheckerInterface;
 use oat\tao\model\resources\ResourceService;
+use oat\tao\model\TaoOntology;
 
 /**
  * This service let's you access the test creator's items
@@ -34,16 +37,16 @@ class CreatorItems extends ConfigurableService
 {
     use OntologyAwareTrait;
 
-    const SERVICE_ID = 'taoQtiTest/CreatorItems';
+    public const SERVICE_ID = 'taoQtiTest/CreatorItems';
 
-    const ITEM_ROOT_CLASS_URI       = 'http://www.tao.lu/Ontologies/TAOItem.rdf#Item';
-    const PROPERTY_ITEM_CONTENT_URI = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContent';
-    const PROPERTY_ITEM_MODEL_URI   = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModel';
-    const ITEM_MODEL_QTI_URI        = 'http://www.tao.lu/Ontologies/TAOItem.rdf#QTI';
-    const LABEL_URI                 = 'http://www.w3.org/2000/01/rdf-schema#label';
+    public const ITEM_ROOT_CLASS_URI       = 'http://www.tao.lu/Ontologies/TAOItem.rdf#Item';
+    public const PROPERTY_ITEM_CONTENT_URI = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContent';
+    public const PROPERTY_ITEM_MODEL_URI   = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModel';
+    public const ITEM_MODEL_QTI_URI        = 'http://www.tao.lu/Ontologies/TAOItem.rdf#QTI';
+    public const LABEL_URI                 = 'http://www.w3.org/2000/01/rdf-schema#label';
 
-    const ITEM_MODEL_SEARCH_OPTION  = 'itemModel';
-    const ITEM_CONTENT_SEARCH_OPTION = 'itemContent';
+    public const ITEM_MODEL_SEARCH_OPTION  = 'itemModel';
+    public const ITEM_CONTENT_SEARCH_OPTION = 'itemContent';
 
     /**
      * The different lookup formats
@@ -69,15 +72,31 @@ class CreatorItems extends ConfigurableService
      * @param int $limit  for paging
      * @return array the items
      */
-    public function getQtiItems(\core_kernel_classes_Class $itemClass, $format = 'list', $search = '', $offset = 0, $limit = 30)
-    {
+    public function getQtiItems(
+        \core_kernel_classes_Class $itemClass,
+        $format = 'list',
+        $search = '',
+        $offset = 0,
+        $limit = 30
+    ) {
         $propertyFilters = [];
 
-        if ($this->hasOption(self::ITEM_MODEL_SEARCH_OPTION) && $this->getOption(self::ITEM_MODEL_SEARCH_OPTION) !== false) {
+        if ($this->getFeatureFlagChecker()->isEnabled('FEATURE_FLAG_TRANSLATION_ENABLED')) {
+            $propertyFilters[TaoOntology::PROPERTY_TRANSLATION_TYPE] =
+                TaoOntology::PROPERTY_VALUE_TRANSLATION_TYPE_ORIGINAL;
+        }
+
+        if (
+            $this->hasOption(self::ITEM_MODEL_SEARCH_OPTION)
+            && $this->getOption(self::ITEM_MODEL_SEARCH_OPTION) !== false
+        ) {
             $propertyFilters[self::PROPERTY_ITEM_MODEL_URI] = $this->getOption(self::ITEM_MODEL_SEARCH_OPTION);
         }
 
-        if ($this->hasOption(self::ITEM_CONTENT_SEARCH_OPTION) && $this->getOption(self::ITEM_MODEL_SEARCH_OPTION) !== false) {
+        if (
+            $this->hasOption(self::ITEM_CONTENT_SEARCH_OPTION)
+            && $this->getOption(self::ITEM_MODEL_SEARCH_OPTION) !== false
+        ) {
             $propertyFilters[self::PROPERTY_ITEM_CONTENT_URI] = '*';
         }
 
@@ -112,5 +131,10 @@ class CreatorItems extends ConfigurableService
     protected function getResourceService()
     {
         return $this->getServiceLocator()->get(ResourceService::SERVICE_ID);
+    }
+
+    private function getFeatureFlagChecker(): FeatureFlagCheckerInterface
+    {
+        return $this->getServiceManager()->get(FeatureFlagChecker::class);
     }
 }

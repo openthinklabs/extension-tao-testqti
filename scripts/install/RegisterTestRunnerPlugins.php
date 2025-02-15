@@ -32,7 +32,6 @@ use oat\taoTests\models\runner\plugins\TestPlugin;
  */
 class RegisterTestRunnerPlugins extends InstallAction
 {
-
     public static $plugins = [
         'content' => [
             [
@@ -192,6 +191,15 @@ class RegisterTestRunnerPlugins extends InstallAction
                 'category' => 'controls',
                 'active' => true,
                 'tags' => [ 'core', 'technical', 'required' ]
+            ], [
+                'id' => 'preventConcurrency',
+                'name' => 'Prevent session concurrency',
+                'module' => 'taoQtiTest/runner/plugins/controls/session/preventConcurrency',
+                'bundle' => 'taoQtiTest/loader/testPlugins.min',
+                'description' => 'Detect concurrent deliveries launched from the same user session',
+                'category' => 'controls',
+                'active' => true,
+                'tags' => [ 'core', 'technical' ]
             ], [
                 'id' => 'connectivity',
                 'name' => 'Connectivity check',
@@ -419,7 +427,8 @@ class RegisterTestRunnerPlugins extends InstallAction
                 'name'        => 'APIP Text To Speech',
                 'module'      => 'taoQtiTest/runner/plugins/tools/apipTextToSpeech/plugin',
                 'bundle'      => 'taoQtiTest/loader/testPlugins.min',
-                'description' => 'Allow Test-taker to playback media files associated according to APIP protocol to item content.',
+                'description' => 'Allow Test-taker to playback media files associated according to APIP protocol to '
+                    . 'item content.',
                 'category'    => 'tools',
                 'active'      => true,
                 'tags'        => [  ]
@@ -438,6 +447,18 @@ class RegisterTestRunnerPlugins extends InstallAction
             ]
         ]
     ];
+
+    public static function getPlugin(string $pluginIdentifier): ?TestPlugin
+    {
+        foreach (self::$plugins as $categoryPlugins) {
+            foreach ($categoryPlugins as $pluginData) {
+                if ($pluginData['id'] == $pluginIdentifier || $pluginData['module'] == $pluginIdentifier) {
+                    return TestPlugin::fromArray($pluginData);
+                }
+            }
+        }
+        return null;
+    }
 
     public function __invoke($params)
     {

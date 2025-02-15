@@ -13,7 +13,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2014-2022 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
+ * Copyright (c) 2014-2024 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
  */
 
 /**
@@ -24,7 +24,6 @@ define([
     'lodash',
     'uri',
     'i18n',
-    'services/features',
     'taoQtiTest/controller/creator/config/defaults',
     'taoQtiTest/controller/creator/views/actions',
     'taoQtiTest/controller/creator/views/itemref',
@@ -39,13 +38,15 @@ define([
     'ui/dialog/confirm',
     'taoQtiTest/controller/creator/helpers/subsection',
     'taoQtiTest/controller/creator/helpers/validators',
-    'taoQtiTest/controller/creator/helpers/featureVisibility'
+    'taoQtiTest/controller/creator/helpers/translation',
+    'taoQtiTest/controller/creator/helpers/featureVisibility',
+    'services/features',
+    'tpl!taoQtiTest/controller/creator/templates/translation-status'
 ], function (
     $,
     _,
     uri,
     __,
-    features,
     defaults,
     actions,
     itemRefView,
@@ -60,7 +61,10 @@ define([
     confirmDialog,
     subsectionsHelper,
     validators,
-    featureVisibility
+    translationHelper,
+    featureVisibility,
+    servicesFeatures,
+    translationStatusTpl
 ) {
     ('use strict');
 
@@ -73,6 +77,7 @@ define([
      * @param {jQuery} $section - the section to set up
      */
     function setUp(creatorContext, sectionModel, partModel, $section) {
+        const defaultsConfigs = defaults();
         // select elements for section, to avoid selecting the same elements in subsections
         const $itemRefsWrapper = $section.children('.itemrefs-wrapper');
         const $rubBlocks = $section.children('.rublocks');
@@ -88,13 +93,18 @@ define([
         if (!sectionModel.categories) {
             // inherit the parent testPart's propagated categories
             const partCategories = testPartCategory.getCategories(partModel);
-            sectionModel.categories = _.clone(partCategories.propagated || defaults().categories);
+            sectionModel.categories = _.clone(partCategories.propagated || defaultsConfigs.categories);
         }
         _.defaults(sectionModel.itemSessionControl, partModel.itemSessionControl);
 
         if (!_.isEmpty(config.routes.blueprintsById)) {
             sectionModel.hasBlueprint = true;
         }
+        sectionModel.isSubsection = false;
+        sectionModel.hasSelectionWithReplacement = servicesFeatures.isVisible(
+            'taoQtiTest/creator/properties/selectionWithReplacement',
+            false
+        );
 
         //add feature visibility properties to sectionModel
         featureVisibility.addSectionVisibilityProps(sectionModel);
@@ -216,9 +226,11 @@ define([
                 if (!sectionModel.sectionParts[index]) {
                     sectionModel.sectionParts[index] = {};
                 }
+                const itemRef = sectionModel.sectionParts[index];
 
-                itemRefView.setUp(creatorContext, sectionModel.sectionParts[index], sectionModel, partModel, $itemRef);
+                itemRefView.setUp(creatorContext, itemRef, sectionModel, partModel, $itemRef);
                 $itemRef.find('.title').text(config.labels[uri.encode($itemRef.data('uri'))]);
+                showItemTranslationStatus(itemRef, $itemRef);
             });
         }
 
@@ -252,7 +264,7 @@ define([
                             }
 
                             //the itemRef should also "inherit" default categories set at the item level
-                            defaultItemData.categories = _.clone(defaults().categories) || [];
+                            defaultItemData.categories = _.clone(defaultsConfigs.categories) || [];
 
                             _.forEach(selection, function (item) {
                                 const itemData = _.defaults(
@@ -296,17 +308,48 @@ define([
                             const index = $itemRef.data('bind-index');
                             const itemRefModel = sectionModel.sectionParts[index];
 
-                            //initialize the new item ref
-                            itemRefView.setUp(creatorContext, itemRefModel, sectionModel, partModel, $itemRef);
+                            return Promise.resolve()
+                                .then(() => {
+                                    if (sectionModel.translation) {
+                                        itemRefModel.translation = true;
+                                        return translationHelper
+                                            .getResourceTranslationStatus(
+                                                itemRefModel.href,
+                                                config.translationLanguageUri
+                                            )
+                                            .then(
+                                                ([translationStatus]) =>
+                                                    (itemRefModel.translationStatus =
+                                                        translationStatus && translationStatus.status)
+                                            );
+                                    }
+                                })
+                                .then(() => {
+                                    //initialize the new item ref
+                                    itemRefView.setUp(creatorContext, itemRefModel, sectionModel, partModel, $itemRef);
+                                    showItemTranslationStatus(itemRefModel, $itemRef);
 
-                            /**
-                             * @event modelOverseer#item-add
-                             * @param {Object} itemRefModel
-                             */
-                            modelOverseer.trigger('item-add', itemRefModel);
+                                    /**
+                                     * @event modelOverseer#item-add
+                                     * @param {Object} itemRefModel
+                                     */
+                                    modelOverseer.trigger('item-add', itemRefModel);
+                                });
                         }
                     }
                 );
+        }
+
+        /**
+         * Show the translation status of the item ref in the view (if translation is enabled).
+         * @param {object} itemRef
+         * @param {string} $itemRef
+         */
+        function showItemTranslationStatus(itemRef, $itemRef) {
+            if (itemRef.translation) {
+                const badgeInfo = translationHelper.getTranslationStatusBadgeInfo(itemRef.translationStatus);
+                $itemRef.find('.translation-status').html(translationStatusTpl(badgeInfo));
+            }
         }
 
         /**
@@ -391,6 +434,17 @@ define([
                         ) {
                             const index = $rubricBlock.data('bind-index');
                             const rubricModel = sectionModel.rubricBlocks[index] || {};
+                            rubricModel.classVisible = sectionModel.rubricBlocksClass;
+
+                            if (sectionModel.translation) {
+                                const originIdentifiers = translationHelper.registerModelIdentifiers(
+                                    config.originModel
+                                );
+                                const originSection = originIdentifiers[sectionModel.identifier];
+                                const originRubricModel = originSection.rubricBlocks[index];
+                                rubricModel.translation = true;
+                                rubricModel.originContent = (originRubricModel && originRubricModel.content) || [];
+                            }
 
                             $('.rubricblock-binding', $rubricBlock).html('<p>&nbsp;</p>');
                             rubricBlockView.setUp(creatorContext, rubricModel, $rubricBlock);
@@ -415,7 +469,7 @@ define([
             const categories = sectionCategory.getCategories(sectionModel),
                 categorySelector = categorySelectorFactory($view);
 
-            categorySelector.createForm(categories.all);
+            categorySelector.createForm(categories.all, 'section');
             updateFormState(categorySelector);
 
             $view.on('propopen.propview', function () {
@@ -423,7 +477,7 @@ define([
             });
 
             $view.on('set-default-categories', function () {
-                sectionModel.categories = defaults().categories;
+                sectionModel.categories = defaultsConfigs.categories;
                 updateFormState(categorySelector);
             });
 
@@ -538,10 +592,13 @@ define([
                             'assessmentSection',
                             'subsection'
                         ),
-                        title: defaults().sectionTitlePrefix,
+                        title: defaultsConfigs.sectionTitlePrefix,
                         index: 0,
                         sectionParts,
-                        visible: true
+                        visible: true,
+                        itemSessionControl: {
+                            maxAttempts: defaultsConfigs.maxAttempts
+                        }
                     });
                 },
                 checkAndCallAdd: function (executeAdd) {
@@ -557,7 +614,7 @@ define([
                             `${index + 1}.`,
                             sectionModel.title,
                             `${index + 1}.1.`,
-                            defaults().sectionTitlePrefix
+                            defaultsConfigs.sectionTitlePrefix
                         );
                         const acceptFunction = () => {
                             // trigger deleted event for each itemfer to run removePropHandler and remove propView
@@ -615,6 +672,12 @@ define([
                         if ($section.data('movedCategories')) {
                             subsectionModel.categories = $section.data('movedCategories');
                             $section.removeData('movedCategories');
+                        }
+
+                        if (sectionModel.translation) {
+                            const originIdentifiers = translationHelper.registerModelIdentifiers(config.originModel);
+                            const originSection = originIdentifiers[subsectionModel.identifier];
+                            translationHelper.setTranslationFromOrigin(subsectionModel, originSection);
                         }
 
                         //initialize the new subsection

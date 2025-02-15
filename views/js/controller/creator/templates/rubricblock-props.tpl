@@ -1,4 +1,5 @@
 <div class="rubricblock-props props clearfix">
+    {{#if translation}}<hr />{{/if}}
 
     <h3>{{__ 'Rubric Block'}}: {{orderIndex}}</h3>
 
@@ -27,6 +28,7 @@
     </div>
     -->
     <!--assessmentTest/testPart/assessmentSection/sectionPart/rubricBlock/class -->
+    {{#if classVisible}}
     <div class="grid-row">
         <div class="col-5">
             <label for="class">{{__ 'Class'}}</label>
@@ -41,6 +43,7 @@
             </div>
         </div>
     </div>
+    {{/if}}
 
     <!--assessmentTest/testPart/assessmentSection/sectionPart/rubricBlock/id -->
     <!--
@@ -67,7 +70,7 @@
     <div class="rubric-feedback toggled">
 
         <!--assessmentTest/testPart/assessmentSection/sectionPart/rubricBlock/feedback/activated -->
-        <div class="grid-row rubric-feedback-activated">
+        <div class="grid-row rubric-feedback-activated checkbox-row">
             <div class="col-5">
                 <label for="activated">{{__ 'Activated'}}</label>
             </div>

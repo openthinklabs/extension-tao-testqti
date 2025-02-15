@@ -1,48 +1,85 @@
 <?php
 
+/**
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; under version 2
+ * of the License (non-upgradable).
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ *
+ * Copyright (c) 2020-2023 (original work) Open Assessment Technologies SA.
+ */
+
 namespace oat\taoQtiTest\test\unit\models\classes\xml;
 
+use common_ext_Extension;
+use common_ext_ExtensionsManager;
 use core_kernel_classes_Resource;
-use oat\generis\test\TestCase;
+use oat\generis\model\GenerisRdf;
+use oat\tao\model\featureFlag\FeatureFlagChecker;
+use oat\tao\model\featureFlag\FeatureFlagCheckerInterface;
+use oat\tao\model\user\implementation\UserSettings;
+use oat\tao\model\user\implementation\UserSettingsService;
+use oat\tao\model\user\UserSettingsInterface;
 use oat\taoQtiTest\models\xmlEditor\XmlEditor;
+use oat\taoQtiTest\models\xmlEditor\XmlEditorInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use qtism\data\storage\xml\XmlDocument;
 use qtism\data\storage\xml\XmlStorageException;
 use SplObjectStorage;
+use oat\generis\test\TestCase;
 use taoQtiTest_models_classes_QtiTestConverterException;
-use \taoQtiTest_models_classes_QtiTestService;
+use taoQtiTest_models_classes_QtiTestService;
 use taoQtiTest_models_classes_QtiTestServiceException;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 class XmlEditorTest extends TestCase
 {
-    /**
-     * @var XmlDocument
-     */
+    /** @var XmlDocument */
     private $xmlDoc;
-    /**
-     * @var core_kernel_classes_Resource|MockObject
-     */
+
+    /** @var core_kernel_classes_Resource|MockObject */
     private $testResourceMock;
-    /**
-     * @var ServiceLocatorInterface
-     */
+
+    /** @var ServiceLocatorInterface */
     private $serviceLocatorMock;
-    /**
-     * @var MockObject|taoQtiTest_models_classes_QtiTestService
-     */
+
+    /** @var taoQtiTest_models_classes_QtiTestService|MockObject */
     private $qtiTestServiceMock;
+
+    /** @var FeatureFlagChecker|MockObject */
+    private $featureFlagCheckerMock;
+
+    /** @var UserSettingsService|MockObject */
+    private $userSettingsService;
 
     public function setUp(): void
     {
         $doc = new XmlDocument();
         $doc->load(__DIR__ . '/../../../../samples/xml/test.xml');
         $this->xmlDoc = $doc;
+
         $this->testResourceMock = $this->createMock(core_kernel_classes_Resource::class);
         $this->qtiTestServiceMock = $this->createMock(taoQtiTest_models_classes_QtiTestService::class);
-        $this->qtiTestServiceMock->method('getDoc')->with($this->testResourceMock)->willReturn($this->xmlDoc);
+        $this->qtiTestServiceMock
+            ->method('getDoc')
+            ->with($this->testResourceMock)
+            ->willReturn($this->xmlDoc);
+        $this->featureFlagCheckerMock = $this->createMock(FeatureFlagChecker::class);
+        $this->userSettingsService = $this->createMock(UserSettingsService::class);
+
         $this->serviceLocatorMock = $this->getServiceLocatorMock([
-            taoQtiTest_models_classes_QtiTestService::class => $this->qtiTestServiceMock
+            taoQtiTest_models_classes_QtiTestService::class => $this->qtiTestServiceMock,
+            FeatureFlagChecker::class => $this->featureFlagCheckerMock,
+            UserSettingsService::class => $this->userSettingsService
         ]);
     }
 
@@ -63,15 +100,21 @@ class XmlEditorTest extends TestCase
     {
         $service = new XmlEditor();
 
+        // phpcs:disable Generic.Files.LineLength
         $xmlMock = <<<'EOL'
 <?xml version="1.0" encoding="UTF-8"?>
-<assessmentTest xmlns="http://www.imsglobal.org/xsd/imsqti_v2p1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="UnitTestQtiItem" title="UnitTestQtiItem" toolName="tao" toolVersion="3.4.0-sprint130" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqti_v2p1 http://www.imsglobal.org/xsd/qti/qtiv2p1/imsqti_v2p1.xsd">
+<assessmentTest xmlns="http://www.imsglobal.org/xsd/imsqti_v2p1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        identifier="UnitTestQtiItem" title="UnitTestQtiItem" toolName="tao" toolVersion="3.4.0-sprint130"
+xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqti_v2p1 http://www.imsglobal.org/xsd/qti/qtiv2p1/imsqti_v2p1.xsd">
     <testPart identifier="testPart-1" navigationMode="linear" submissionMode="individual">
-        <itemSessionControl maxAttempts="0" showFeedback="false" allowReview="true" showSolution="false" allowComment="false" allowSkipping="true" validateResponses="false"/>
-        <assessmentSection identifier="assessmentSection-1" required="true" fixed="false" title="Section 1" visible="true" keepTogether="true"/>
+        <itemSessionControl maxAttempts="0" showFeedback="false" allowReview="true" showSolution="false"
+            allowComment="false" allowSkipping="true" validateResponses="false"/>
+        <assessmentSection identifier="assessmentSection-1" required="true" fixed="false" title="Section 1"
+            visible="true" keepTogether="true"/>
     </testPart>
 </assessmentTest>
 EOL;
+        // phpcs:enable Generic.Files.LineLength
 
         $expectArrayTest = [
             "qti-type" => "assessmentTest",
@@ -140,9 +183,88 @@ EOL;
         $service->saveStringTest($this->testResourceMock, $xmlMock);
     }
 
-    public function testIsLocked()
+    /**
+     * @dataProvider getFeatureIsLockedData
+     */
+    public function testIsLocked(array $options): void
     {
-        $service = new XmlEditor([XmlEditor::OPTION_XML_EDITOR_LOCK => false]);
-        $this->assertEquals(false, $service->isLocked());
+        $userSettings = $this->createMock(UserSettings::class);
+        $userSettings->method('getSetting')
+            ->with(UserSettingsInterface::INTERFACE_MODE)
+            ->willReturn($options['interfaceMode']);
+
+        $this->userSettingsService
+            ->method('getCurrentUserSettings')
+            ->willReturn($userSettings);
+
+        $service = new XmlEditor([XmlEditorInterface::OPTION_XML_EDITOR_LOCK => $options['configFlag']]);
+        $service->setServiceLocator($this->serviceLocatorMock);
+
+        $this->featureFlagCheckerMock
+            ->method('isEnabled')
+            ->withConsecutive(['FEATURE_FLAG_XML_EDITOR_ENABLED'], ['XML_EDITOR_ENABLED'])
+            ->willReturnOnConsecutiveCalls($options['xmlEditorEnabled'], $options['legacyXmlEditorEnabled']);
+
+        $this->assertEquals($options['expectedLock'], $service->isLocked());
+    }
+
+    public function getFeatureIsLockedData(): array
+    {
+        return [
+            'unlocked by config' => [
+                'options' => [
+                    'configFlag' => false,
+                    'xmlEditorEnabled' => false,
+                    'legacyXmlEditorEnabled' => false,
+                    'interfaceMode' => GenerisRdf::PROPERTY_USER_INTERFACE_MODE_ADVANCED,
+                    'expectedLock' => false
+                ]
+            ],
+            'unlocked by new feature flag' => [
+                'options' => [
+                    'configFlag' => true,
+                    'xmlEditorEnabled' => true,
+                    'legacyXmlEditorEnabled' => false,
+                    'interfaceMode' => GenerisRdf::PROPERTY_USER_INTERFACE_MODE_ADVANCED,
+                    'expectedLock' => false
+                ]
+            ],
+            'unlocked by legacy feature flag' => [
+                'options' => [
+                    'configFlag' => true,
+                    'xmlEditorEnabled' => false,
+                    'legacyXmlEditorEnabled' => true,
+                    'interfaceMode' => GenerisRdf::PROPERTY_USER_INTERFACE_MODE_ADVANCED,
+                    'expectedLock' => false
+                ]
+            ],
+            'locked' => [
+                'options' => [
+                    'configFlag' => true,
+                    'xmlEditorEnabled' => false,
+                    'legacyXmlEditorEnabled' => false,
+                    'interfaceMode' => GenerisRdf::PROPERTY_USER_INTERFACE_MODE_ADVANCED,
+                    'expectedLock' => true
+                ]
+            ],
+            'enabled but locked but simple interface' => [
+                'options' => [
+                    'configFlag' => true,
+                    'xmlEditorEnabled' => true,
+                    'legacyXmlEditorEnabled' => true,
+                    'interfaceMode' => GenerisRdf::PROPERTY_USER_INTERFACE_MODE_SIMPLE,
+                    'expectedLock' => true
+                ]
+            ],
+            'enabled with advanced interface mode' => [
+                'options' => [
+                    'configFlag' => true,
+                    'xmlEditorEnabled' => true,
+                    'legacyXmlEditorEnabled' => true,
+                    'interfaceMode' => GenerisRdf::PROPERTY_USER_INTERFACE_MODE_ADVANCED,
+                    'expectedLock' => false
+                ]
+            ]
+        ];
     }
 }

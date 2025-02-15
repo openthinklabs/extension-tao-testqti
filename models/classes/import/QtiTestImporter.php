@@ -15,14 +15,17 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2017 (original work) Open Assessment Technologies SA;
+ * Copyright (c) 2017-2024 (original work) Open Assessment Technologies SA;
  *
  */
 
 namespace oat\taoQtiTest\models\import;
 
+use common_report_Report;
+use core_kernel_classes_Class;
 use oat\oatbox\filesystem\File;
 use oat\taoTests\models\import\AbstractTestImporter;
+use taoQtiTest_models_classes_CrudQtiTestsService;
 
 /**
  * Class QtiTestImport
@@ -31,20 +34,44 @@ use oat\taoTests\models\import\AbstractTestImporter;
  */
 class QtiTestImporter extends AbstractTestImporter
 {
-    const IMPORTER_ID = 'taoQtiTest';
+    public const IMPORTER_ID = 'taoQtiTest';
 
     /**
      * @param File $file
-     * @param \core_kernel_classes_Class $class
+     * @param core_kernel_classes_Class|null $class
      * @param bool $enableMetadataGuardians
      * @param bool $enableValidators
      * @param bool $itemMustExist
      * @param bool $itemMustBeOverwritten
-     * @return \common_report_Report
+     * @param bool $overwriteTest
+     * @param string|null $itemClassUri
+     * @param string|null $overwriteTestUri
+     * @param string|null $packageLabel
+     * @return common_report_Report
      */
-    public function import(File $file, \core_kernel_classes_Class $class = null, $enableMetadataGuardians = true, $enableValidators = true, $itemMustExist = false, $itemMustBeOverwritten = false)
-    {
-        $service = \taoQtiTest_models_classes_CrudQtiTestsService::singleton();
-        return $service->importQtiTest($file, $class, $enableMetadataGuardians, $enableValidators, $itemMustExist, $itemMustBeOverwritten);
+    public function import(
+        File $file,
+        core_kernel_classes_Class $class = null,
+        $enableMetadataGuardians = true,
+        $enableValidators = true,
+        $itemMustExist = false,
+        $itemMustBeOverwritten = false,
+        bool $overwriteTest = false,
+        ?string $itemClassUri = null,
+        ?string $overwriteTestUri = null,
+        ?string $packageLabel = null
+    ) {
+        return taoQtiTest_models_classes_CrudQtiTestsService::singleton()->importQtiTest(
+            $file,
+            $class,
+            $enableMetadataGuardians,
+            $enableValidators,
+            $itemMustExist,
+            $itemMustBeOverwritten,
+            $overwriteTest,
+            $itemClassUri,
+            $overwriteTestUri,
+            $packageLabel
+        );
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -14,9 +15,11 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2008-2010 (original work) Deutsche Institut für Internationale Pädagogische Forschung (under the project TAO-TRANSFER);
- *               2009-2012 (update and modification) Public Research Centre Henri Tudor (under the project TAO-SUSTAIN & TAO-DEV);
- *
+ * Copyright (c) 2008-2010 (original work) Deutsche Institut für Internationale Pädagogische Forschung
+ *                         (under the project TAO-TRANSFER);
+ *               2009-2012 (update and modification) Public Research Centre Henri Tudor
+ *                         (under the project TAO-SUSTAIN & TAO-DEV);
+ *               2024 (update and modification) Open Assessment Technologies SA
  */
 
 /**
@@ -29,35 +32,41 @@
  */
 class taoQtiTest_models_classes_import_TestImportForm extends tao_helpers_form_FormContainer
 {
-    // --- ASSOCIATIONS ---
+    public const FORM_NAME = 'export';
+    public const METADATA_FORM_ELEMENT_NAME = 'metadata';
+    public const DISABLED_FIELDS = 'disabledFields';
 
+    public const ITEM_CLASS_DESTINATION_FIELD = 'itemClassDestination';
+    public const METADATA_FIELD = 'metadataImport';
 
-    // --- ATTRIBUTES ---
-
-    // --- OPERATIONS ---
     /**
      * (non-PHPdoc)
      * @see tao_helpers_form_FormContainer::initForm()
      */
     public function initForm()
     {
-        $this->form = new tao_helpers_form_xhtml_Form('export');
+        $this->form = new tao_helpers_form_xhtml_Form(self::FORM_NAME);
 
         $this->form->setDecorators([
-            'element'           => new tao_helpers_form_xhtml_TagWrapper(['tag' => 'div']),
-            'group'             => new tao_helpers_form_xhtml_TagWrapper(['tag' => 'div', 'cssClass' => 'form-group']),
-            'error'             => new tao_helpers_form_xhtml_TagWrapper(['tag' => 'div', 'cssClass' => 'form-error ui-state-error ui-corner-all']),
-            'actions-bottom'    => new tao_helpers_form_xhtml_TagWrapper(['tag' => 'div', 'cssClass' => 'form-toolbar']),
-            'actions-top'       => new tao_helpers_form_xhtml_TagWrapper(['tag' => 'div', 'cssClass' => 'form-toolbar'])
+            'element' => new tao_helpers_form_xhtml_TagWrapper(['tag' => 'div']),
+            'group' => new tao_helpers_form_xhtml_TagWrapper(['tag' => 'div', 'cssClass' => 'form-group']),
+            'error' => new tao_helpers_form_xhtml_TagWrapper([
+                'tag' => 'div',
+                'cssClass' => 'form-error ui-state-error ui-corner-all',
+            ]),
+            'actions-bottom' => new tao_helpers_form_xhtml_TagWrapper(['tag' => 'div', 'cssClass' => 'form-toolbar']),
+            'actions-top' => new tao_helpers_form_xhtml_TagWrapper(['tag' => 'div', 'cssClass' => 'form-toolbar'])
         ]);
 
         $submitElt = tao_helpers_form_FormFactory::getElement('import', 'Free');
-        $submitElt->setValue('<a href="#" class="form-submitter btn-success small"><span class="icon-import"></span> ' . __('Import') . '</a>');
-        
+        $submitElt->setValue(
+            '<a href="#" class="form-submitter btn-success small"><span class="icon-import"></span> '
+                . __('Import') . '</a>'
+        );
 
         $this->form->setActions([$submitElt], 'bottom');
     }
-    
+
     /**
      * (non-PHPdoc)
      * @see tao_helpers_form_FormContainer::initElements()
@@ -73,22 +82,77 @@ class taoQtiTest_models_classes_import_TestImportForm extends tao_helpers_form_F
             $fileElt->addValidator(tao_helpers_form_FormFactory::getValidator('NotEmpty', ['message' => '']));
         }
         $fileElt->addValidators([
-            tao_helpers_form_FormFactory::getValidator('FileMimeType', ['mimetype' => ['application/zip', 'application/x-zip', 'application/x-zip-compressed', 'application/octet-stream'], 'extension' => ['zip']]),
-            tao_helpers_form_FormFactory::getValidator('FileSize', ['max' => \oat\generis\Helper\SystemHelper::getFileUploadLimit()])
+            tao_helpers_form_FormFactory::getValidator(
+                'FileMimeType',
+                [
+                    'mimetype' => [
+                        'application/zip',
+                        'application/x-zip',
+                        'application/x-zip-compressed',
+                        'application/octet-stream',
+                    ],
+                    'extension' => ['zip'],
+                ]
+            ),
+            tao_helpers_form_FormFactory::getValidator(
+                'FileSize',
+                ['max' => \oat\generis\Helper\SystemHelper::getFileUploadLimit()]
+            )
         ]);
-        
+
+
         $this->form->addElement($fileElt);
-        
-        /*
-        $disableValidationElt = tao_helpers_form_FormFactory::getElement("disable_validation", 'Checkbox');
-        $disableValidationElt->setDescription(__("Disable validation"));
-        $disableValidationElt->setOptions(array("on" => ""));
-        $this->form->addElement($disableValidationElt);
-        */
-        $this->form->createGroup('file', __('Import a QTI/APIP Content Package'), ['source']);
-        
+
+        $this->form->createGroup(
+            'file',
+            __('Import a QTI/APIP Content Package'),
+            [
+                'source',
+            ]
+        );
+
+        $this->addMetadataImportElement();
+        $this->addItemDestinationPlacementComponent();
         $qtiSentElt = tao_helpers_form_FormFactory::getElement('import_sent_qti', 'Hidden');
         $qtiSentElt->setValue(1);
         $this->form->addElement($qtiSentElt);
+    }
+
+    private function isFieldDisabled(string $filedName): bool
+    {
+        return isset($this->options[self::DISABLED_FIELDS])
+            && in_array($filedName, $this->options[self::DISABLED_FIELDS]);
+    }
+
+    private function addMetadataImportElement(): void
+    {
+        if (!$this->isFieldDisabled(self::METADATA_FIELD)) {
+            $metadataImport = tao_helpers_form_FormFactory::getElement(
+                self::METADATA_FORM_ELEMENT_NAME,
+                'Checkbox'
+            );
+
+            $metadataImport->setOptions([self::METADATA_FORM_ELEMENT_NAME => __('QTI metadata as properties')]);
+            $metadataImport->setDescription(__('Import'));
+            $metadataImport->setLevel(1);
+            $this->form->addElement($metadataImport);
+            $this->form->addToGroup('file', self::METADATA_FORM_ELEMENT_NAME);
+        }
+    }
+
+    private function addItemDestinationPlacementComponent(): void
+    {
+        if (!$this->isFieldDisabled(self::ITEM_CLASS_DESTINATION_FIELD)) {
+            $selectElt = tao_helpers_form_FormFactory::getElement('selectelt', 'Free');
+            $selectElt->setValue('<div class="item-select-container"></div>');
+
+            $itemClassDestination = tao_helpers_form_FormFactory::getElement(
+                self::ITEM_CLASS_DESTINATION_FIELD,
+                'Hidden'
+            );
+
+            $this->form->addElement($itemClassDestination);
+            $this->form->addElement($selectElt);
+        }
     }
 }

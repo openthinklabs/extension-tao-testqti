@@ -1,42 +1,47 @@
 <div id="itemref-props-{{identifier}}" class="itemref-props props clearfix">
+    {{#if translation}}<hr />{{/if}}
 
     <h3>{{{dompurify label}}}</h3>
 
-<!-- assessmentTest/testPart/assessmentSection/sectionPart/identifier -->
-    <div class="grid-row">
-        <div class="col-5">
-            <label for="itemref-identifier">{{__ 'Identifier'}} <abbr title="{{__ 'Required field'}}">*</abbr></label>
-            <span id="props-{{identifier}}" data-bind="identifier" style="display: none;">{{identifier}}</span>
-        </div>
-        <div class="col-6">
-            <input type="text" name="itemref-identifier" data-bind="identifier" data-validate="$notEmpty; $idFormat; $testIdAvailable(identifier={{identifier}});" />
-        </div>
-        <div class="col-1 help">
-            <span class="icon-help" data-tooltip="~ .tooltip-content" data-tooltip-theme="info"></span>
-            <div class="tooltip-content">
-            {{__ 'The identifier of the item reference.'}}
+    {{#if showIdentifier}}
+        <!-- assessmentTest/testPart/assessmentSection/sectionPart/identifier -->
+        <div class="grid-row">
+            <div class="col-5">
+                <label for="itemref-identifier">{{__ 'Identifier'}} <abbr title="{{__ 'Required field'}}">*</abbr></label>
+                <span id="props-{{identifier}}" data-bind="identifier" style="display: none;">{{identifier}}</span>
+            </div>
+            <div class="col-6">
+                <input type="text" name="itemref-identifier"{{#if translation}} readonly{{/if}} data-bind="identifier" data-validate="$notEmpty; $idFormat; $testIdAvailable(identifier={{identifier}});" />
+            </div>
+            <div class="col-1 help">
+                <span class="icon-help" data-tooltip="~ .tooltip-content" data-tooltip-theme="info"></span>
+                <div class="tooltip-content">
+                {{__ 'The identifier of the item reference.'}}
+                </div>
             </div>
         </div>
-    </div>
+    {{/if}}
 
-<!-- assessmentTest/testPart/assessmentSection/sectionPart/href -->
-    <div class="grid-row">
-        <div class="col-5">
-            <label for="itemref-href">{{__ 'Reference'}} <abbr title="{{__ 'Required field'}}">*</abbr></label>
-        </div>
-        <div class="col-6">
-            <input type="text" name="itemref-href" data-bind="href" readonly="readonly" />
-        </div>
-        <div class="col-1 help">
-            <span class="icon-help" data-tooltip="~ .tooltip-content" data-tooltip-theme="info"></span>
-            <div class="tooltip-content">
-            {{__ 'The reference.'}}
+    {{#if showReference}}
+        <!-- assessmentTest/testPart/assessmentSection/sectionPart/href -->
+        <div class="grid-row">
+            <div class="col-5">
+                <label for="itemref-href">{{__ 'Reference'}} <abbr title="{{__ 'Required field'}}">*</abbr></label>
+            </div>
+            <div class="col-6">
+                <input type="text" name="itemref-href" data-bind="href" readonly="readonly" />
+            </div>
+            <div class="col-1 help">
+                <span class="icon-help" data-tooltip="~ .tooltip-content" data-tooltip-theme="info"></span>
+                <div class="tooltip-content">
+                {{__ 'The reference.'}}
+                </div>
             </div>
         </div>
-    </div>
-
+    {{/if}}
+{{#unless translation}}
 <!-- assessmentTest/testPart/assessmentSection/sectionPart/required -->
-    <div class="grid-row pseudo-label-box">
+    <div class="grid-row pseudo-label-box checkbox-row">
         <div class="col-5">
             <label for="itemref-required">{{__ 'Required'}}</label>
         </div>
@@ -55,7 +60,7 @@
     </div>
 
 <!-- assessmentTest/testPart/assessmentSection/sectionPart/fixed -->
-    <div class="grid-row pseudo-label-box">
+    <div class="grid-row pseudo-label-box checkbox-row">
         <div class="col-5">
             <label for="itemref-fixed">{{__ 'Fixed'}}</label>
         </div>
@@ -96,32 +101,33 @@
         <div class="category-presets"></div>
     </div>
 
-    <h4 class="toggler closed" data-toggle="~ .itemref-weights">{{__ 'Weights'}}</h4>
+    {{#if weightsVisible}}
+        <h4 class="toggler closed" data-toggle="~ .itemref-weights">{{__ 'Weights'}}</h4>
 
-    <div class="itemref-weights toggled">
-        <div class="grid-row ">
-            <div class="col-9">
-                <strong>{{__ 'Identifier'}}</strong>
+        <div class="itemref-weights toggled">
+            <div class="grid-row ">
+                <div class="col-9">
+                    <strong>{{__ 'Identifier'}}</strong>
+                </div>
+                <div class="col-2">
+                    <strong>{{__ 'Value'}}</strong>
+                </div>
+                <div class="col-1 help">
+                    <span class="icon-help" data-tooltip="~ .tooltip-content" data-tooltip-theme="info"></span>
+                    <div class="tooltip-content">
+                        {{__ 'Controls the contribution of an individual item score to the overall test score.'}}
+                    </div>
+                </div>
             </div>
-            <div class="col-2">
-                <strong>{{__ 'Value'}}</strong>
-            </div>
-            <div class="col-1 help">
-                <span class="icon-help" data-tooltip="~ .tooltip-content" data-tooltip-theme="info"></span>
-                <div class="tooltip-content">
-                    {{__ 'Controls the contribution of an individual item score to the overall test score.'}}
+            <!-- assessmentTest/testPart/assessmentSection/sectionPart/weights -->
+            <div data-bind-each="weights" data-bind-tmpl="itemrefweight"></div>
+            <div class="grid-row">
+                <div class="col-12">
+                    <a class="itemref-weight-add"><span class="icon-add"></span> {{__ 'add a new weight'}}</a>
                 </div>
             </div>
         </div>
-<!-- assessmentTest/testPart/assessmentSection/sectionPart/weights -->
-        <div data-bind-each="weights" data-bind-tmpl="itemrefweight"></div>
-        <div class="grid-row">
-            <div class="col-12">
-                <a class="itemref-weight-add"><span class="icon-add"></span> {{__ 'add a new weight'}}</a>
-            </div>
-        </div>
-    </div>
-
+    {{/if}}
 
     <h4 class="toggler closed" data-toggle="~ .itemref-item-session-control">{{__ 'Item Session Control'}}</h4>
 
@@ -129,10 +135,10 @@
     <div class="itemref-item-session-control toggled">
 <!-- assessmentTest/testPart/assessmentSection/sectionPart/itemSessionControl/maxAttempts -->
         <div class="grid-row">
-            <div class="col-5">
+            <div class="col-6">
                 <label for="itemref-max-attempts">{{__ 'Max Attempts'}}</label>
             </div>
-            <div class="col-6">
+            <div class="col-5">
                 <input
                         name="itemref-max-attempts"
                         type="text"
@@ -152,13 +158,13 @@
             </div>
         </div>
 
-<!-- assessmentTest/testPart/assessmentSection/sectionPart/itemSessionControl/showFeedback -->
         {{#if itemSessionShowFeedback}}
-            <div class="grid-row pseudo-label-box">
-                <div class="col-5">
+            <!-- assessmentTest/testPart/assessmentSection/sectionPart/itemSessionControl/showFeedback -->
+            <div class="grid-row pseudo-label-box checkbox-row">
+                <div class="col-6">
                     <label for="itemref-show-feedback">{{__ 'Show Feedback'}}</label>
                 </div>
-                <div class="col-6">
+                <div class="col-5">
                     <label>
                         <input type="checkbox" name="itemref-show-feedback" value="true" data-bind="itemSessionControl.showFeedback" data-bind-encoder="boolean" />
                         <span class="icon-checkbox"></span>
@@ -175,11 +181,11 @@
 
 {{!-- Property not yet available in delivery
 <!-- assessmentTest/testPart/assessmentSection/sectionPart/itemSessionControl/allowReview -->
-        <div class="grid-row pseudo-label-box">
-            <div class="col-5">
+        <div class="grid-row pseudo-label-box checkbox-row">
+            <div class="col-6">
                 <label for="itemref-show-allow-review">{{__ 'Allow Review'}}</label>
             </div>
-            <div class="col-6">
+            <div class="col-5">
                 <label>
                     <input type="checkbox" name="itemref-allow-review" value="true" checked="checked" data-bind="itemSessionControl.allowReview" data-bind-encoder="boolean" />
                     <span class="icon-checkbox"></span>
@@ -196,11 +202,11 @@
 
 {{!-- Property not yet available in delivery
 <!-- assessmentTest/testPart/assessmentSection/sectionPart/itemSessionControl/showSolution -->
-        <div class="grid-row pseudo-label-box">
-            <div class="col-5">
+        <div class="grid-row pseudo-label-box checkbox-row">
+            <div class="col-6">
                 <label for="itemref-show-solution">{{__ 'Show Solution'}}</label>
             </div>
-            <div class="col-6">
+            <div class="col-5">
                 <label>
                     <input type="checkbox" name="itemref-show-solution" value="true"  data-bind="itemSessionControl.showSolution" data-bind-encoder="boolean" />
                     <span class="icon-checkbox"></span>
@@ -217,11 +223,11 @@
 
 <!-- assessmentTest/testPart/assessmentSection/sectionPart/itemSessionControl/allowComment -->
         {{#if itemSessionAllowComment}}
-            <div class="grid-row pseudo-label-box">
-                <div class="col-5">
+            <div class="grid-row pseudo-label-box checkbox-row">
+                <div class="col-6">
                     <label for="itemref-allow-comment">{{__ 'Allow Comment'}}</label>
                 </div>
-                <div class="col-6">
+                <div class="col-5">
                     <label>
                         <input type="checkbox" name="itemref-allow-comment" value="true"  data-bind="itemSessionControl.allowComment" data-bind-encoder="boolean" />
                         <span class="icon-checkbox"></span>
@@ -238,11 +244,11 @@
 
 <!-- assessmentTest/testPart/assessmentSection/sectionPart/itemSessionControl/allowSkipping -->
         {{#if itemSessionAllowSkipping}}
-            <div class="grid-row pseudo-label-box">
-                <div class="col-5">
+            <div class="grid-row pseudo-label-box checkbox-row">
+                <div class="col-6">
                     <label for="itemref-allow-skipping">{{__ 'Allow Skipping'}}</label>
                 </div>
-                <div class="col-6">
+                <div class="col-5">
                     <label>
                         <input type="checkbox" name="itemref-allow-skipping" value="true" checked="checked" data-bind="itemSessionControl.allowSkipping" data-bind-encoder="boolean" />
                         <span class="icon-checkbox"></span>
@@ -257,27 +263,30 @@
             </div>
         {{/if}}
 
-<!-- assessmentTest/testPart/assessmentSection/sectionPart/itemSessionControl/validateResponses -->
-        <div class="grid-row pseudo-label-box">
-            <div class="col-5">
-                <label for="itemref-validate-responses">{{__ 'Validate Responses'}}</label>
-            </div>
-            <div class="col-6">
-                <label>
-                    <input type="checkbox" name="itemref-validate-responses" value="true" data-bind="itemSessionControl.validateResponses" data-bind-encoder="boolean" />
-                    <span class="icon-checkbox"></span>
-                </label>
-            </div>
-            <div class="col-1 help">
-                <span class="icon-help" data-tooltip="~ .tooltip-content" data-tooltip-theme="info"></span>
-                <div class="tooltip-content">
-                {{__ "The candidate is not allowed to submit invalid responses."}}
+        {{#if validateResponsesVisible}}
+            <!-- assessmentTest/testPart/assessmentSection/sectionPart/itemSessionControl/validateResponses -->
+            <div class="grid-row pseudo-label-box checkbox-row">
+                <div class="col-6">
+                    <label for="itemref-validate-responses">{{__ 'Enforce Item Constraints'}}</label>
+                </div>
+                <div class="col-5">
+                    <label>
+                        <input type="checkbox" name="itemref-validate-responses" value="true" data-bind="itemSessionControl.validateResponses" data-bind-encoder="boolean" />
+                        <span class="icon-checkbox"></span>
+                    </label>
+                </div>
+                <div class="col-1 help">
+                    <span class="icon-help" data-tooltip="~ .tooltip-content" data-tooltip-theme="info"></span>
+                    <div class="tooltip-content">
+                    {{__ "Checking this box prevents the test-taker from navigating to other items until the current item constraints, if any, are met. Unchecking this box will allow free navigation even if the responses don't comply with the item constraints set."}}
+                    </div>
                 </div>
             </div>
-        </div>
+        {{/if}}
 
     </div>
 
+    {{#if showTimeLimits}}
     <h4 class="toggler closed" data-toggle="~ .itemref-time-limits">{{__ 'Time Limits'}}</h4>
 
 <!-- assessmentTest/timeLimits -->
@@ -346,23 +355,27 @@
             </div>
         </div>
 
-<!-- assessmentTest/testPart/assessmentSection/sectionPart/timeLimits/allowLateSubmission -->
-        <div class="grid-row pseudo-label-box">
-            <div class="col-5">
-                <label for="itemref-allow-late-submission">{{__ 'Late submission allowed'}}</label>
-            </div>
-            <div class="col-6">
-                <label>
-                    <input type="checkbox" name="itemref-allow-late-submission" value="true" data-bind="timeLimits.allowLateSubmission" data-bind-encoder="boolean" />
-                    <span class="icon-checkbox"></span>
-                </label>
-            </div>
-            <div class="col-1 help">
-                <span class="icon-help" data-tooltip="~ .tooltip-content" data-tooltip-theme="info"></span>
-                <div class="tooltip-content">
-                {{__ "Whether a candidate's response that is beyond the maximum duration of the item should still be accepted."}}
+        {{#if lateSubmission}}
+            <!-- assessmentTest/testPart/assessmentSection/sectionPart/timeLimits/allowLateSubmission -->
+            <div class="grid-row pseudo-label-box checkbox-row">
+                <div class="col-5">
+                    <label for="itemref-allow-late-submission">{{__ 'Late submission allowed'}}</label>
+                </div>
+                <div class="col-6">
+                    <label>
+                        <input type="checkbox" name="itemref-allow-late-submission" value="true" data-bind="timeLimits.allowLateSubmission" data-bind-encoder="boolean" />
+                        <span class="icon-checkbox"></span>
+                    </label>
+                </div>
+                <div class="col-1 help">
+                    <span class="icon-help" data-tooltip="~ .tooltip-content" data-tooltip-theme="info"></span>
+                    <div class="tooltip-content">
+                    {{__ "Whether a candidate's response that is beyond the maximum duration of the item should still be accepted."}}
+                    </div>
                 </div>
             </div>
-        </div>
+        {{/if}}
     </div>
+    {{/if}}
+{{/unless}}
 </div>

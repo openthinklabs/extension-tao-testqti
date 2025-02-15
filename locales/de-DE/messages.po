@@ -1,25 +1,35 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 3.4.0-sprint155\n"
-"PO-Revision-Date: 2021-06-02T12:04:32\n"
+"Project-Id-Version: tao-open-source\n"
+"PO-Revision-Date: 2024-12-19 16:02\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
-"Language: de-DE\n"
+"Language: de\n"
 "sourceLanguage: en-US\n"
-"targetLanguage: de-DE\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"targetLanguage: en-US\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Basepath: ../../\n"
 "X-Poedit-KeywordsList: __\n"
 "X-Poedit-SearchPath-0: .\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Crowdin-Project: tao-open-source\n"
+"X-Crowdin-Project-ID: 590867\n"
+"X-Crowdin-Language: de\n"
+"X-Crowdin-File: /[oat-sa.extension-tao-testqti] develop/locales/en-US/messages.po\n"
+"X-Crowdin-File-ID: 817\n"
+"Language-Team: German\n"
 
 msgid "%s to answer %s"
-msgstr ""
+msgstr "%s, um %s zu antworten"
 
 msgid "(Visual) Clear all active highlights"
-msgstr ""
+msgstr "(Visuell) Alle aktiven Hervorhebungen löschen"
 
 msgid "(Visual) Highlight Text"
+msgstr "(Visuell) Text hervorheben"
+
+msgid "A concurrent delivery has been detected. Please use the last open session. The present window can be closed."
 msgstr ""
 
 msgid "A QTI Item involved in the QTI Test '%s' could not be compiled."
@@ -35,28 +45,34 @@ msgid "A remote resource referenced in QTI test '%s' could not be retrieved."
 msgstr "Eine entfernte Ressource, die im QTI Test '%s' angegeben ist, konnte nicht abgeholt werden."
 
 msgid "A response to every question in this item is required."
-msgstr ""
+msgstr "Eine Antwort auf jede Frage in diesem Element ist erforderlich."
 
 msgid "A response to this item is required."
-msgstr ""
+msgstr "Eine Antwort für dieses Element ist erforderlich."
 
 msgid "A valid response to this item is required."
-msgstr ""
+msgstr "Eine gültige Antwort für dieses Element ist erforderlich."
 
 msgid "A visible section is one that is identifiable by the candidate."
 msgstr "Eine sichtbare Sektion, ist eine Sektion, die vom Kandidaten identifiziert werden."
 
-msgid "Activated"
+msgid "Accessibility tool that enables Test Taker to have the item content read aloud."
 msgstr ""
 
+msgid "Activated"
+msgstr "Aktiviert"
+
 msgid "add a new weight"
-msgstr ""
+msgstr "Fügen Sie eine neue Gewichtung hinzu"
 
 msgid "Add a zip file containing QTI/APIP tests and items"
 msgstr "ZIP-Datei mit QTI/APIP Tests und Elementen hinzufügen"
 
 msgid "Add selected item(s) here."
 msgstr "Hier ausgewählte(s) Element(e) hinzufügen."
+
+msgid "Add Subsection"
+msgstr ""
 
 msgid "Add the source file"
 msgstr "Quelldatei hinzufügen"
@@ -74,67 +90,67 @@ msgid "Allow Review"
 msgstr "Bewertung erlauben"
 
 msgid "Allow Section Skipping"
-msgstr ""
+msgstr "Abschnittsüberspringen zulassen"
 
 msgid "Allow Skipping"
 msgstr "Überspringen erlauben"
 
 msgid "Allow skipping of the current section."
-msgstr ""
+msgstr "Ermöglicht das Überspringen des aktuellen Abschnitts."
 
 msgid "Allow Test-taker to playback media files associated according to APIP protocol to item content."
-msgstr ""
+msgstr "Ermöglichen Sie dem Testteilnehmer die Wiedergabe von Mediendateien, die gemäß APIP-Protokoll mit Elementinhalten verknüpft sind."
 
 msgid "Allow the candidate to review his answers."
 msgstr "Dem Kandidaten erlauben seine Antworten zu überprüfen."
 
 msgid "Allow the test-taker to eliminate / strikethrough answers in choice interactions."
-msgstr ""
+msgstr "Erlauben Sie dem Testteilnehmer, Antworten in Auswahlinteraktionen zu streichen/durchzustreichen."
 
 msgid "Allow the test-taker to highlight parts of the item text."
-msgstr ""
+msgstr "Erlauben Sie dem Testteilnehmer, Textteile hervorzuheben."
 
 msgid "Allow the test-taker to mask and unmask answers in choice interactions."
-msgstr ""
+msgstr "Ermöglichen Sie dem Testteilnehmer, Antworten in Auswahlinteraktionen zu maskieren und zu demaskieren."
 
 msgid "Allow the test-taker to mask parts of the item with a movable mask."
-msgstr ""
+msgstr "Erlauben Sie dem Prüfling, Teile des Gegenstands mit einer beweglichen Maske abzudecken."
 
 msgid "Allow the test-taker to use a basic calculator."
-msgstr ""
+msgstr "Ermöglichen Sie dem Testteilnehmer die Verwendung eines einfachen Taschenrechners."
 
 msgid "Allow the test-taker to use a calculator respecting the order of operations (BODMAS)."
-msgstr ""
+msgstr "Ermöglichen Sie dem Testteilnehmer die Verwendung eines Taschenrechners unter Berücksichtigung der Reihenfolge der Operationen (BODMAS)."
 
 msgid "Allow the test-taker to use a movable magnifier tool."
-msgstr ""
+msgstr "Ermöglichen Sie dem Testteilnehmer die Verwendung einer beweglichen Lupe."
 
 msgid "Allow the test-taker to use a scientific calculator."
-msgstr ""
+msgstr "Erlauben Sie dem Testteilnehmer, einen wissenschaftlichen Taschenrechner zu verwenden."
 
 msgid "Allow the test-taker to visually isolate a line of text."
-msgstr ""
+msgstr "Ermöglichen Sie dem Testteilnehmer, eine Textzeile visuell zu isolieren."
 
 msgid "Allows Test-taker to zoom in and out the item content."
-msgstr ""
+msgstr "Ermöglicht dem Testteilnehmer das Vergrößern und Verkleinern des Elementinhalts."
 
 msgid "Also compute the score per categories"
-msgstr ""
+msgstr "Berechnen Sie auch die Punktzahl pro Kategorie"
 
 msgid "An error occured while retrieving items"
-msgstr ""
+msgstr "Beim Abrufen der Elemente ist ein Fehler aufgetreten"
 
 msgid "An error occurred during results submission. Please retry."
-msgstr ""
+msgstr "Bei der Übermittlung der Ergebnisse ist ein Fehler aufgetreten. Bitte erneut versuchen."
 
 msgid "An error occurred during the test initialization!"
-msgstr ""
+msgstr "Bei der Testinitialisierung ist ein Fehler aufgetreten!"
 
 msgid "An error occurred during the test, please content your administrator."
-msgstr ""
+msgstr "Während des Tests ist ein Fehler aufgetreten. Bitte wenden Sie sich an Ihren Administrator."
 
 msgid "An error occurred!"
-msgstr ""
+msgstr "Ein Fehler ist aufgetreten!"
 
 msgid "An error occurs, please contact your administrator"
 msgstr "Es ist ein Fehler aufgetreten, bitte kontaktieren Sie Ihren Administrator"
@@ -155,19 +171,19 @@ msgid "An unknown error occured while compiling QTI test '%s'."
 msgstr "Beim Kompilieren des QTI Tests '%s' trat ein unbekannter Fehler auf."
 
 msgid "An unrecoverable error occurred. Your test session will be paused."
-msgstr ""
+msgstr "Es ist ein nicht behebbarer Fehler aufgetreten. Ihre Prüfung wird angehalten."
 
 msgid "and"
-msgstr ""
+msgstr "und"
 
 msgid "and flagged %s of them"
-msgstr ""
+msgstr "und %s davon markiert"
 
 msgid "and you flagged %s item(s) that you can review now"
-msgstr ""
+msgstr "und Sie haben %s Artikel markiert, die Sie jetzt überprüfen können"
 
 msgid "Answer Eliminator"
-msgstr ""
+msgstr "Antwort-Eliminator"
 
 msgid "Answer Masking"
 msgstr ""
@@ -223,6 +239,15 @@ msgstr "Schwarz auf Violett"
 msgid "Black on White"
 msgstr "Schwarz auf Weiß"
 
+msgid "Bookmark question"
+msgstr ""
+
+msgid "Bookmark the current question for later review"
+msgstr ""
+
+msgid "Bookmarked question %s"
+msgstr ""
+
 msgid "Calculator"
 msgstr ""
 
@@ -257,7 +282,7 @@ msgid "Class"
 msgstr ""
 
 msgid "Class successfully created."
-msgstr ""
+msgstr "Klasse erfolgreich erstellt."
 
 msgid "Clear all active highlights"
 msgstr "Markierung aufheben"
@@ -268,11 +293,14 @@ msgstr ""
 msgid "Click \"%s\" to continue"
 msgstr ""
 
+msgid "Click \"%s\" to continue."
+msgstr ""
+
 msgid "Click to speak"
 msgstr ""
 
 msgid "Close"
-msgstr ""
+msgstr "Schließen"
 
 msgid "Close Magnifier"
 msgstr ""
@@ -332,25 +360,25 @@ msgid "Disconnected from server"
 msgstr ""
 
 msgid "Display a warning before the test-taker ends a test part and there are still items left unanswered or marked for review."
-msgstr ""
+msgstr "Zeigen Sie eine Warnung an, bevor der Prüfungsteilnehmer einen Testabschnitt beendet und noch Prüfungsteile unbeantwortet oder zur Überprüfung markiert sind."
 
 msgid "Display a warning before the test-taker ends the test part."
-msgstr ""
+msgstr "Zeigen Sie eine Warnung an, bevor der Prüfungsteilnehmer den Testabschnitt beendet."
 
 msgid "Display a warning before the test-taker ends the test."
-msgstr ""
+msgstr "Zeigen Sie eine Warnung an, bevor der Teilnehmer die Prüfung beendet."
 
 msgid "Display a warning before the test-taker skips the section. Requires the Section Skipping option."
-msgstr ""
+msgstr "Zeigen Sie eine Warnung an, bevor der Prüfling den Abschnitt überspringt. Erfordert die Option „Abschnitt überspringen“."
 
 msgid "Display End Test Warning"
-msgstr ""
+msgstr "Warnung \"Ende des Tests\" anzeigen"
 
 msgid "Display Next Part Warning"
-msgstr ""
+msgstr "Warnung zum nächsten Teil anzeigen"
 
 msgid "Display Next Section Warning"
-msgstr ""
+msgstr "Warnung zum nächsten Abschnitt anzeigen"
 
 msgid "Display Unanswered Warning"
 msgstr ""
@@ -359,6 +387,9 @@ msgid "Displayed label"
 msgstr ""
 
 msgid "Displays a customisable magnifier"
+msgstr ""
+
+msgid "Do not bookmark the current question for later review"
 msgstr ""
 
 msgid "Do not flag the current item for later review"
@@ -370,11 +401,11 @@ msgstr ""
 msgid "Do not show alert on timeout"
 msgstr ""
 
-msgid "Don\'t save"
+msgid "Don\\'t save"
 msgstr ""
 
 msgid "Download"
-msgstr ""
+msgstr "Download"
 
 msgid "Download the pupil responses and submit manually."
 msgstr ""
@@ -419,7 +450,7 @@ msgid "Enter a custom category"
 msgstr ""
 
 msgid "Error"
-msgstr "Fehler"
+msgstr "Fehlermeldung"
 
 msgid "Error during file import"
 msgstr "Fehler beim Dateiimport"
@@ -432,10 +463,19 @@ msgstr "Fehler im IMS QTI Test gefunden:\n"
 msgid "Expand the review panel"
 msgstr "Vorschau ausklappen"
 
+msgid "Export"
+msgstr "Export"
+
 msgid "Export failed for the test \"%s"
 msgstr "Fehler beim Exportieren in Test: %s"
 
+msgid "Export failed. Key uri nor classUri in formValues are not defined"
+msgstr ""
+
 msgid "Export metadata"
+msgstr "Metadaten exportieren"
+
+msgid "Export QTI %s Test Package"
 msgstr ""
 
 msgid "Export QTI 2.1 Test Package"
@@ -507,6 +547,9 @@ msgstr "Grau auf Grün"
 msgid "Hide Review"
 msgstr ""
 
+msgid "Hide test overview panel"
+msgstr ""
+
 msgid "Hide the review screen"
 msgstr "Inhalt ausblenden"
 
@@ -558,6 +601,9 @@ msgstr ""
 msgid "If the connection cannot be restored, see option B."
 msgstr ""
 
+msgid "If you leave the test, your changes will not be saved due to invalid test settings. Are you sure you wish to leave?"
+msgstr ""
+
 msgid "If you need help, please contact our Helpline on 0330 088 4171."
 msgstr ""
 
@@ -565,13 +611,13 @@ msgid "Import"
 msgstr "Importieren"
 
 msgid "Import a QTI/APIP Content Package"
-msgstr ""
+msgstr "Importieren eines QTI/APIP Content Package"
 
 msgid "Import QTI TEST into \"%s"
 msgstr ""
 
 msgid "IMS QTI Item referenced as \"%s\" in the IMS Manifest file could not be imported."
-msgstr "IMS QTI Element, in der IMS Manifest Datei referenziert als \"%s\", konnte nicht importiert werden."
+msgstr "Das IMS QTI-Element mit der Bezeichnung \"%s\" in der IMS-Manifestdatei konnte nicht importiert werden."
 
 msgid "IMS QTI Item referenced as \"%s\" in the IMS Manifest file successfully imported."
 msgstr "IMS QTI Element, in der IMS Manifest Datei referenziert als \"%s\", wurde erfolgreich importiert."
@@ -590,6 +636,9 @@ msgstr "Inkonsistenz in Zeile %1d:"
 
 msgid "Individual"
 msgstr "Individuell"
+
+msgid "Informational item"
+msgstr ""
 
 msgid "Informational Item Usage"
 msgstr ""
@@ -673,7 +722,7 @@ msgid "Line Reader"
 msgstr ""
 
 msgid "Linear"
-msgstr "Linear"
+msgstr ""
 
 msgid "Link durations to activate the guided navigation"
 msgstr ""
@@ -702,11 +751,11 @@ msgstr "Rubrik-Blöcke verwalten"
 msgid "Manage test properties"
 msgstr "Test-Eigenschaften verwalten"
 
+msgid "Manage Tests"
+msgstr "Tests verwalten"
+
 #, tao-public
 msgid "Manage tests"
-msgstr ""
-
-msgid "Manage Tests"
 msgstr "Tests verwalten"
 
 msgid "Mark for review"
@@ -761,19 +810,25 @@ msgid "Minimum duration for this test part."
 msgstr "Minimale Dauer für diesen Testteil."
 
 msgid "minutes"
+msgstr "Minuten"
+
+msgid "Missed required parameter \\'id\\'"
 msgstr ""
 
-msgid "Missed required parameter \'id\"
+msgid "Missed required parameter \\'id\\'"
 msgstr ""
 
 msgid "Missed test package file"
+msgstr ""
+
+msgid "Missing filename for QTI Test export"
 msgstr ""
 
 msgid "Missing required configuration option %s"
 msgstr ""
 
 msgid "Move"
-msgstr ""
+msgstr "Verschieben"
 
 msgid "Move Down"
 msgstr "Gehe nach unten"
@@ -809,7 +864,7 @@ msgid "New test part"
 msgstr "Neuer Test-Teil"
 
 msgid "Next"
-msgstr "Weiter"
+msgstr "Nächste"
 
 msgid "Next Section"
 msgstr "Nächster Abschnitt"
@@ -817,11 +872,17 @@ msgstr "Nächster Abschnitt"
 msgid "No"
 msgstr "Nein"
 
+msgid "NO"
+msgstr ""
+
 msgid "No CAT Engine configured for CAT Endpoint \"%s\"."
 msgstr ""
 
 msgid "No file found at location \"%s\"."
 msgstr "Keine Datei unter Pfad \"%s\" gefunden."
+
+msgid "No instance in form to export"
+msgstr ""
 
 msgid "No more attempts allowed for item \"%s\"."
 msgstr "Für Element \"%s\" sind keine weiteren Versuche erlaubt."
@@ -839,7 +900,7 @@ msgid "Non Linear"
 msgstr "Nichtlinear"
 
 msgid "None"
-msgstr ""
+msgstr "Keine"
 
 msgid "Not all test could be exported"
 msgstr ""
@@ -857,7 +918,7 @@ msgid "Offline"
 msgstr ""
 
 msgid "OK"
-msgstr ""
+msgstr "OK"
 
 msgid "Ok"
 msgstr "OK"
@@ -899,7 +960,7 @@ msgid "Ordering"
 msgstr "Sortierung"
 
 msgid "Outcome"
-msgstr ""
+msgstr "Ergebnis"
 
 msgid "Outcome declarations"
 msgstr ""
@@ -917,7 +978,7 @@ msgid "Passage"
 msgstr ""
 
 msgid "Pause"
-msgstr ""
+msgstr "Pause"
 
 msgid "Pause the test"
 msgstr ""
@@ -935,19 +996,19 @@ msgid "Please wait while we try to restore the connection."
 msgstr "Haben Sie bitte einen Moment, wir versuchen die Verbindung wiederherzustellen."
 
 msgid "Preview"
-msgstr ""
+msgstr "Vorschau"
 
 msgid "Preview the covered area"
 msgstr ""
 
 msgid "Previous"
-msgstr "Zurück"
+msgstr "Vorherige"
 
 msgid "PROCEED & END ASSESSMENT"
 msgstr ""
 
 msgid "Proctor"
-msgstr "Aufsicht"
+msgstr "Aufsichtsperson"
 
 msgid "Properties"
 msgstr "Eigenschaften"
@@ -956,13 +1017,19 @@ msgid "QTI 2.1 Test Driver"
 msgstr "QTI 2.1 Test-Treiber"
 
 msgid "QTI Item Runner"
-msgstr "QTI Element-Ausführer"
+msgstr "QTI Element Runner"
 
 msgid "QTI Test \"%s\" publishing failed."
 msgstr "Veröffentlichen von QTI Test \"%s\" fehlgeschlagen."
 
 msgid "QTI Test \"%s\" successfully published."
 msgstr "QTI Test \"%s\" wurde erfolgreich veröffentlicht."
+
+msgid "QTI Test Metadata"
+msgstr ""
+
+msgid "QTI Test Package %s"
+msgstr ""
 
 msgid "QTI Test Package 2.1"
 msgstr "QTI Test-Paket 2.1"
@@ -977,6 +1044,9 @@ msgid "question"
 msgstr ""
 
 msgid "Question"
+msgstr "Frage"
+
+msgid "Question %s"
 msgstr ""
 
 msgid "questions"
@@ -1003,6 +1073,9 @@ msgstr "Rubrik-Block entfernen"
 msgid "Remove Section"
 msgstr "Abschnitt entfernen"
 
+msgid "Remove Subsection"
+msgstr ""
+
 msgid "Remove Test Part"
 msgstr ""
 
@@ -1016,6 +1089,9 @@ msgid "Reset filters"
 msgstr "Filter zurücksetzen"
 
 msgid "Resource(s) successfully exported."
+msgstr "Ressource(n) erfolgreich exportiert."
+
+msgid "ResultTransmission event successfully registered"
 msgstr ""
 
 msgid "Review"
@@ -1048,10 +1124,10 @@ msgstr "Punktezähler"
 msgid "Scoring"
 msgstr ""
 
-msgid "Scratch pad"
+msgid "Scratch Pad"
 msgstr ""
 
-msgid "Scratch Pad"
+msgid "Scratch pad"
 msgstr ""
 
 msgid "Scratchpad"
@@ -1115,7 +1191,7 @@ msgid "SetSynchronisationService successfully configured."
 msgstr ""
 
 msgid "Settings"
-msgstr ""
+msgstr "Einstellungen"
 
 msgid "Show Feedback"
 msgstr "Feedback anzeigen"
@@ -1125,6 +1201,9 @@ msgstr ""
 
 msgid "Show Solution"
 msgstr "Lösung anzeigen"
+
+msgid "Show test overview panel"
+msgstr ""
 
 msgid "Show the review screen"
 msgstr "Inhalt anzeigen"
@@ -1175,7 +1254,7 @@ msgid "Something unexpected happened."
 msgstr ""
 
 msgid "Something went wrong..."
-msgstr ""
+msgstr "Etwas ist schief gelaufen ..."
 
 msgid "Speech speed"
 msgstr ""
@@ -1234,11 +1313,17 @@ msgstr ""
 msgid "Test Navigation"
 msgstr ""
 
+msgid "Test overview"
+msgstr ""
+
+msgid "Test part level category enables configuring the categories of its composing items all at once. A category in gray means that all items have that category. A category in white means that only a few items have that category."
+msgstr ""
+
 msgid "Test Part Properties"
 msgstr ""
 
 msgid "Test Preview is not installed, please contact to your administrator."
-msgstr ""
+msgstr "Test Preview ist nicht installiert. Bitte wenden Sie sich an Ihren Administrator."
 
 msgid "Test Saved"
 msgstr "Test gespeichert"
@@ -1257,7 +1342,7 @@ msgstr ""
 
 #, tao-public
 msgid "Tests"
-msgstr ""
+msgstr "Tests"
 
 msgid "Text content"
 msgstr ""
@@ -1284,7 +1369,7 @@ msgid "The assessment has been suspended by an authorized proctor. If you wish t
 msgstr ""
 
 msgid "The assessment has been suspended. To resume your assessment, please relaunch it and contact your proctor if required."
-msgstr ""
+msgstr "Die Prüfung wurde ausgesetzt. Um Ihre Prüfung fortzusetzen, starten Sie sie bitte neu und wenden Sie sich bei Bedarf an Ihren Prüfer."
 
 msgid "The assessment has been suspended. To resume your assessment, please relaunch it."
 msgstr ""
@@ -1293,7 +1378,7 @@ msgid "The assessment has been terminated."
 msgstr ""
 
 msgid "The assessment has been terminated. You cannot interact with it anymore."
-msgstr ""
+msgstr "Die Prüfung wurde beendet. Sie können nicht mehr daran teilnehmen."
 
 msgid "The assessment is still running."
 msgstr ""
@@ -1323,7 +1408,7 @@ msgid "The identifier of the section."
 msgstr "Der Bezeichner des Abschnitts."
 
 msgid "The IMS QTI Item referenced as \"%s\" in the IMS Manifest file was already stored in the Item Bank."
-msgstr "Das IMS QTI Element, in der IMS Manifest Datei referenziert als \"%s\", wurder bereits in der Element-Bank gespeichert."
+msgstr "Das in der IMS-Manifestdatei als \"%s\" referenzierte IMS QTI-Element war bereits in der Item-Bank gespeichert."
 
 msgid "The IMS QTI Test Package could not be imported."
 msgstr "IMS QTI Test Paket konnte nicht importiert werden."
@@ -1348,6 +1433,9 @@ msgstr "Der Hauptbezeichner des Tests."
 
 msgid "The provided archive is invalid. Make sure it is not corrupted and that it contains an 'imsmanifest.xml' file."
 msgstr "Das bereitgestellte Archiv ist ungültig. Prüfen Sie, dass die Datei nicht fehlerhaft ist und eine imsmanifest.xml Datei enthält."
+
+msgid "The QTI Item with URI '%s' cannot be found."
+msgstr ""
 
 msgid "The QTI Test '%s' to be compiled must contain at least 1 QTI Item. None found."
 msgstr "Der zu kompilierende QTI Test '%s' muss mindestens 1 QTI Element enthalten. Keiner gefunden."
@@ -1378,6 +1466,13 @@ msgstr "Der Abschnittstitel"
 
 msgid "The submission mode determines when the candidate's responses are submitted for response processing. A testPart in individual mode requires the candidate to submit their responses on an item-by-item basis. In simultaneous mode the candidate's responses are all submitted together at the end of the testPart."
 msgstr "Der Eingabemodus bestimmt wann die Antworten des Kandidaten verarbeitet werden. Beim Test Teil im individuellen Modus ist es notwendig das der Kandidat seine Antworten auf Element-nach-Element Basis abgibt. Im Simultanmodus werden alle Antworten am Ende des Test Teil zusammen eingereicht."
+
+msgid "The test cannot be saved because it currently contains invalid settings.\n"
+msgstr ""
+
+msgid "The test cannot be saved because it currently contains invalid settings.\n"
+"Please fix the invalid settings and try again."
+msgstr ""
 
 msgid "The test has been closed/suspended!"
 msgstr ""
@@ -1473,10 +1568,10 @@ msgid "Try connecting the machine to the internet via cable, or move to an area 
 msgstr ""
 
 msgid "Tutor"
-msgstr "Tutor"
+msgstr ""
 
 msgid "Type"
-msgstr ""
+msgstr "Typ"
 
 msgid "Unanswered"
 msgstr "Unbeantwortet"
@@ -1506,7 +1601,7 @@ msgid "Validate Responses"
 msgstr "Antworten validieren"
 
 msgid "Value"
-msgstr ""
+msgstr "Wert"
 
 msgid "Viewed"
 msgstr "Angesehene Seiten"
@@ -1599,6 +1694,9 @@ msgstr "Gelb auf Blau"
 msgid "Yes"
 msgstr "Ja"
 
+msgid "YES"
+msgstr ""
+
 msgid "You answered %s of %s question(s) for this section of the test"
 msgstr ""
 
@@ -1676,4 +1774,10 @@ msgstr "Heranzoomen"
 
 msgid "Zoom out"
 msgstr "Herauszoomen"
+
+msgid "Enforce Item Constraints"
+msgstr ""
+
+msgid "Checking this box prevents the test-taker from navigating to other items until the current item constraints, if any, are met. Unchecking this box will allow free navigation even if the responses don't comply with the item constraints set."
+msgstr ""
 

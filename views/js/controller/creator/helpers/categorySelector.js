@@ -13,7 +13,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2017 (original work) Open Assessment Technologies SA;
+ * Copyright (c) 2017-2024 (original work) Open Assessment Technologies SA;
  */
 /**
  * This helper manages the category selection UI:
@@ -28,108 +28,109 @@ define([
     'lodash',
     'i18n',
     'core/eventifier',
+    'ui/dialog/confirm',
     'ui/tooltip',
     'taoQtiTest/controller/creator/templates/index',
+    'taoQtiTest/controller/creator/helpers/featureVisibility',
     'select2'
-], function($, _, __, eventifier, tooltip, templates) {
+], function ($, _, __, eventifier, confirmDialog, tooltip, templates, featureVisibility) {
     'use strict';
 
-    var allPresets = [],
-        allQtiCategoriesPresets = [];
-
+    let allPresets = [];
+    let allQtiCategoriesPresets = [];
+    let categoryToPreset = new Map();
 
     function categorySelectorFactory($container) {
-        var categorySelector,
+        const $presetsContainer = $container.find('.category-presets');
+        const $customCategoriesSelect = $container.find('[name=category-custom]');
 
-            $presetsContainer = $container.find('.category-presets'),
-            $presetsCheckboxes,
-            $customCategoriesSelect = $container.find('[name=category-custom]');
-
-        /**
-         * Read the form state from the DOM and trigger an event with the result, so the listeners can update the item/section model
-         * @fires categorySelector#category-change
-         */
-        function updateCategories() {
-            var selectedCategories,
-                indeterminatedCategories,
-
-                presetSelected = $container
-                    .find('.category-preset input:checked')
-                    .toArray()
-                    .map(function(categoryEl) {
-                        return categoryEl.value;
-                    }),
-                presetIndeterminate = $container
-                    .find('.category-preset input:indeterminate')
-                    .toArray()
-                    .map(function(categoryEl) {
-                        return categoryEl.value;
-                    }),
-                customSelected = $customCategoriesSelect.siblings('.select2-container').find('.select2-search-choice').not('.partial')
-                    .toArray()
-                    .map(function(categoryEl) {
-                        return categoryEl.textContent && categoryEl.textContent.trim();
-                    }),
-                customIndeterminate = $customCategoriesSelect.siblings('.select2-container').find('.select2-search-choice.partial')
-                    .toArray()
-                    .map(function(categoryEl) {
-                        return categoryEl.textContent && categoryEl.textContent.trim();
-                    });
-
-            selectedCategories = presetSelected.concat(customSelected);
-            indeterminatedCategories = presetIndeterminate.concat(customIndeterminate);
-
+        const categorySelector = {
             /**
-             * @event categorySelector#category-change
-             * @param {String[]} allCategories
-             * @param {String[]} indeterminate
+             * Read the form state from the DOM and trigger an event with the result, so the listeners can update the item/section model
+             * @fires categorySelector#category-change
              */
-            this.trigger('category-change', selectedCategories, indeterminatedCategories);
-        }
+            updateCategories() {
+                const presetSelected = $container
+                        .find('.category-preset input:checked')
+                        .toArray()
+                        .map(categoryEl => categoryEl.value),
+                    presetIndeterminate = $container
+                        .find('.category-preset input:indeterminate')
+                        .toArray()
+                        .map(categoryEl => categoryEl.value),
+                    customSelected = $customCategoriesSelect
+                        .siblings('.select2-container')
+                        .find('.select2-search-choice')
+                        .not('.partial')
+                        .toArray()
+                        .map(categoryEl => categoryEl.textContent && categoryEl.textContent.trim()),
+                    customIndeterminate = $customCategoriesSelect
+                        .siblings('.select2-container')
+                        .find('.select2-search-choice.partial')
+                        .toArray()
+                        .map(categoryEl => categoryEl.textContent && categoryEl.textContent.trim());
 
-        categorySelector = {
+                const selectedCategories = presetSelected.concat(customSelected);
+                const indeterminatedCategories = presetIndeterminate.concat(customIndeterminate);
+
+                /**
+                 * @event categorySelector#category-change
+                 * @param {String[]} allCategories
+                 * @param {String[]} indeterminate
+                 */
+                this.trigger('category-change', selectedCategories, indeterminatedCategories);
+            },
+
             /**
              * Create the category selection form
              *
              * @param {Array} [currentCategories] - all categories currently associated to the item. If applied to a section,
              * contains all the categories applied to at least one item of the section.
+             * @param {string} [level] one of the values `testPart`, `section` or `itemRef`
              */
-            createForm: function createForm(currentCategories) {
-                var self = this,
-                    presetsTpl = templates.properties.categorypresets,
-                    customCategories = _.difference(currentCategories, allQtiCategoriesPresets);
+            createForm(currentCategories, level) {
+                const presetsTpl = templates.properties.categorypresets;
+                const customCategories = _.difference(currentCategories, allQtiCategoriesPresets);
 
+                const filteredPresets = featureVisibility.filterVisiblePresets(allPresets, level);
                 // add preset checkboxes
-                $presetsContainer.append(
-                    presetsTpl({presetGroups: allPresets})
-                );
+                $presetsContainer.append(presetsTpl({ presetGroups: filteredPresets }));
 
-                $presetsContainer.on('click', function(e) {
-                    var $preset = $(e.target).closest('.category-preset'),
-                        $checkbox;
-
+                $presetsContainer.on('click', e => {
+                    const $preset = $(e.target).closest('.category-preset');
                     if ($preset.length) {
-                        $checkbox = $preset.find('input');
+                        const $checkbox = $preset.find('input');
                         $checkbox.prop('indeterminate', false);
 
-                        _.defer(function() {
-                            updateCategories.call(self);
-                        });
+                        _.defer(() => this.updateCategories());
                     }
                 });
 
                 // init custom categories field
-                $customCategoriesSelect.select2({
-                    width: '100%',
-                    tags : customCategories,
-                    multiple : true,
-                    tokenSeparators: [",", " ", ";"],
-                    formatNoMatches : function(){
-                        return __('Enter a custom category');
-                    },
-                    maximumInputLength : 32
-                }).on('change', function(){
-                    updateCategories.call(self);
+                $customCategoriesSelect
+                    .select2({
+                        width: '100%',
+                        containerCssClass: 'custom-categories',
+                        tags: customCategories,
+                        multiple: true,
+                        tokenSeparators: [',', ' ', ';'],
+                        createSearchChoice: (category) => category.match(/^[a-zA-Z_][a-zA-Z0-9_-]*$/)
+                            ? { id: category, text: category }
+                            : null,
+                        formatNoMatches: () => __('Category name not allowed'),
+                        maximumInputLength: 32
+                    })
+                    .on('change', () => this.updateCategories());
+
+                // when clicking on a partial category, ask the user if it wants to apply it to all items
+                $container.find('.custom-categories').on('click', '.partial', e => {
+                    const $choice = $(e.target).closest('.select2-search-choice');
+                    const tag = $choice.text().trim();
+
+                    confirmDialog(__('Do you want to apply the category "%s" to all included items?', tag), () => {
+                        $choice.removeClass('partial');
+                        this.updateCategories();
+                    });
                 });
 
                 // enable help tooltips
@@ -141,40 +142,46 @@ define([
              * @param {String[]} selected - categories associated with an item, or with all the items of the same section
              * @param {String[]} [indeterminate] - categories in an indeterminate state at a section level
              */
-            updateFormState: function updateFormState(selected, indeterminate) {
-                var customCategories;
-
+            updateFormState(selected, indeterminate) {
                 indeterminate = indeterminate || [];
 
-                customCategories = _.difference(selected.concat(indeterminate), allQtiCategoriesPresets);
+                const customCategories = _.difference(selected.concat(indeterminate), allQtiCategoriesPresets);
 
                 // Preset categories
 
-                $presetsCheckboxes = $container.find('.category-preset input');
-                $presetsCheckboxes.each(function() {
-                    var category = this.value;
-
-                    this.indeterminate = false;
-                    this.checked = false;
-
-                    if (indeterminate.indexOf(category) !== -1) {
-                        this.indeterminate = true;
-                    } else if (selected.indexOf(category) !== -1) {
-                        this.checked = true;
+                const $presetsCheckboxes = $container.find('.category-preset input');
+                $presetsCheckboxes.each((idx, input) => {
+                    const qtiCategory = input.value;
+                    if (!categoryToPreset.has(qtiCategory)) {
+                        // Unlikely to happen, but better safe than sorry...
+                        input.indeterminate = indeterminate.includes(qtiCategory);
+                        input.checked = selected.includes(qtiCategory);
+                        return;
                     }
+                    // Check if one category declared for the preset is selected.
+                    // Usually, only one exists, but it may happen that alternatives are present.
+                    // In any case, only the main declared category (qtiCategory) will be saved.
+                    // The concept is as follows: read all, write one.
+                    const preset = categoryToPreset.get(qtiCategory);
+                    const hasCategory = category => preset.categories.includes(category);
+                    input.indeterminate = indeterminate.some(hasCategory);
+                    input.checked = selected.some(hasCategory);
                 });
 
                 // Custom categories
 
                 $customCategoriesSelect.select2('val', customCategories);
 
-                $customCategoriesSelect.siblings('.select2-container').find('.select2-search-choice').each(function(){
-                    var $li = $(this);
-                    var content = $li.find('div').text();
-                    if(indeterminate.indexOf(content) !== -1){
-                        $li.addClass('partial');
-                    }
-                });
+                $customCategoriesSelect
+                    .siblings('.select2-container')
+                    .find('.select2-search-choice')
+                    .each((idx, li) => {
+                        const $li = $(li);
+                        const content = $li.find('div').text();
+                        if (indeterminate.indexOf(content) !== -1) {
+                            $li.addClass('partial');
+                        }
+                    });
             }
         };
 
@@ -193,9 +200,11 @@ define([
      *          {
      *              id: 'nextPartWarning',
      *              label: 'Next Part Warning',
-     *              qtiCategory : 'x-tao-option-nextPartWarning',
-     *              description : 'Displays a warning before the user finishes a part'
- *              },
+     *              qtiCategory: 'x-tao-option-nextPartWarning',
+     *              altCategories: [x-tao-option-nextPartWarningMessage]
+     *              description: 'Displays a warning before the user finishes a part'
+     *              ...
+     *          },
      *          ...
      *      ]
      *  },
@@ -203,22 +212,19 @@ define([
      * ]
      */
     categorySelectorFactory.setPresets = function setPresets(presets) {
-        if (_.isArray(presets)) {
-            allPresets = presets;
-            allQtiCategoriesPresets = extractCategoriesFromPresets();
+        if (Array.isArray(presets)) {
+            allPresets = Array.from(presets);
+            categoryToPreset = new Map();
+            allQtiCategoriesPresets = allPresets.reduce((allCategories, group) => {
+                return group.presets.reduce((all, preset) => {
+                    const categories = [preset.qtiCategory].concat(preset.altCategories || []);
+                    categories.forEach(category => categoryToPreset.set(category, preset));
+                    preset.categories = categories;
+                    return all.concat(categories);
+                }, allCategories);
+            }, []);
         }
     };
-
-    /**
-     * Extract the qtiCategory property of all presets of all groups
-     * @returns {String[]}
-     */
-    function extractCategoriesFromPresets() {
-        return allPresets.reduce(function (prev, current) {
-            var groupIds = _.pluck(current.presets, 'qtiCategory');
-            return prev.concat(groupIds);
-        }, []);
-    }
 
     return categorySelectorFactory;
 });

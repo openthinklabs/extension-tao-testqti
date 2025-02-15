@@ -15,9 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2021 (original work) Open Assessment Technologies SA;
- *
- * @author Ricardo Quintanilha <ricardo.quintanilha@taotesting.com>
+ * Copyright (c) 2021-2024 (original work) Open Assessment Technologies SA;
  */
 
 declare(strict_types=1);
@@ -28,23 +26,32 @@ use oat\generis\model\data\Ontology;
 use oat\generis\model\DependencyInjection\ContainerServiceProviderInterface;
 use oat\oatbox\event\EventManager;
 use oat\oatbox\log\LoggerService;
-use oat\taoQtiItem\model\qti\Service;
+use oat\tao\model\featureFlag\FeatureFlagChecker;
+use oat\taoDelivery\model\execution\DeliveryExecutionService;
+use oat\taoDelivery\model\execution\StateServiceInterface;
+use oat\taoDelivery\model\RuntimeService;
 use oat\taoQtiTest\model\Domain\Model\ItemResponseRepositoryInterface;
 use oat\taoQtiTest\model\Domain\Model\QtiTestRepositoryInterface;
 use oat\taoQtiTest\model\Domain\Model\ToolsStateRepositoryInterface;
 use oat\taoQtiTest\model\Infrastructure\QtiItemResponseRepository;
+use oat\taoQtiTest\model\Infrastructure\QtiItemResponseValidator;
 use oat\taoQtiTest\model\Infrastructure\QtiToolsStateRepository;
 use oat\taoQtiTest\model\Infrastructure\QtiTestRepository;
+use oat\taoQtiTest\model\Service\ConcurringSessionService;
 use oat\taoQtiTest\model\Service\ExitTestService;
 use oat\taoQtiTest\model\Service\ListItemsService;
 use oat\taoQtiTest\model\Service\MoveService;
 use oat\taoQtiTest\model\Service\PauseService;
+use oat\taoQtiTest\model\Service\PluginManagerService;
 use oat\taoQtiTest\model\Service\SkipService;
 use oat\taoQtiTest\model\Service\StoreTraceVariablesService;
 use oat\taoQtiTest\model\Service\TimeoutService;
 use oat\taoQtiTest\models\runner\QtiRunnerService;
+use oat\taoQtiTest\models\runner\time\TimerAdjustmentServiceInterface;
 use oat\taoQtiTest\models\TestModelService;
+use oat\taoQtiTest\models\TestSessionService;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+use common_ext_ExtensionsManager as ExtensionsManager;
 
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 
@@ -59,7 +66,9 @@ class TestQtiServiceProvider implements ContainerServiceProviderInterface
             ->public()
             ->args(
                 [
-                    service(QtiRunnerService::SERVICE_ID)
+                    service(QtiRunnerService::SERVICE_ID),
+                    service(FeatureFlagChecker::class),
+                    service(QtiItemResponseValidator::class),
                 ]
             );
 
@@ -156,5 +165,35 @@ class TestQtiServiceProvider implements ContainerServiceProviderInterface
                     service(TestModelService::SERVICE_ID),
                 ]
             );
+
+        $services
+            ->set(ConcurringSessionService::class, ConcurringSessionService::class)
+            ->public()
+            ->args(
+                [
+                    service(LoggerService::SERVICE_ID),
+                    service(QtiRunnerService::SERVICE_ID),
+                    service(RuntimeService::SERVICE_ID),
+                    service(DeliveryExecutionService::SERVICE_ID),
+                    service(FeatureFlagChecker::class),
+                    service(StateServiceInterface::SERVICE_ID),
+                    service(TestSessionService::SERVICE_ID),
+                    service(TimerAdjustmentServiceInterface::SERVICE_ID),
+                ]
+            );
+
+        $services
+            ->set(QtiItemResponseValidator::class, QtiItemResponseValidator::class)
+            ->public();
+
+        $services
+            ->set(PluginManagerService::class, PluginManagerService::class)
+            ->args(
+                [
+                    service(Ontology::SERVICE_ID),
+                    service(ExtensionsManager::SERVICE_ID),
+                ]
+            )
+            ->public();
     }
 }

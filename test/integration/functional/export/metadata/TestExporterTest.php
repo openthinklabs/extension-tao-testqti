@@ -23,7 +23,7 @@ namespace oat\taoQtiTest\test\integration;
 
 use oat\generis\test\GenerisPhpUnitTestRunner;
 use oat\oatbox\service\ServiceManager;
-use oat\taoQtiTest\models\export\metadata\TestExporter;
+use oat\taoQtiTest\models\export\metadata\QtiTestExporter;
 
 /**
  * This test case focuses on testing the TestCompilerUtils helper.
@@ -34,7 +34,6 @@ use oat\taoQtiTest\models\export\metadata\TestExporter;
  */
 class TestExporterTest extends GenerisPhpUnitTestRunner
 {
-
     private $testCreatedUri;
 
     public static function samplesDir()
@@ -42,7 +41,7 @@ class TestExporterTest extends GenerisPhpUnitTestRunner
         return dirname(dirname(__DIR__)) . '/samples/metadata/test/';
     }
 
-    
+
     /**
      *
      * @dataProvider metaProvider
@@ -51,7 +50,9 @@ class TestExporterTest extends GenerisPhpUnitTestRunner
      */
     public function testExport($testFile, $expectedMeta)
     {
-        $class = \taoTests_models_classes_TestsService::singleton()->getRootclass()->createSubClass(uniqid('functional'));
+        $class = \taoTests_models_classes_TestsService::singleton()
+            ->getRootclass()
+            ->createSubClass(uniqid('functional'));
         \helpers_TimeOutHelper::setTimeOutLimit(\helpers_TimeOutHelper::LONG);
         $report = \taoQtiTest_models_classes_QtiTestService::singleton()
             ->importMultipleTests($class, $testFile);
@@ -60,7 +61,7 @@ class TestExporterTest extends GenerisPhpUnitTestRunner
         $resource = current($resources);
         $this->testCreatedUri = $resource->getUri();
 
-        $testExporter = new TestExporter();
+        $testExporter = new QtiTestExporter();
         $testExporter->setServiceLocator(ServiceManager::getServiceManager());
         $file = $testExporter->export($this->testCreatedUri);
 

@@ -1,6 +1,8 @@
 extension-tao-testqti
 =====================
 
+[![codecov](https://codecov.io/gh/oat-sa/extension-tao-testqti/branch/master/graph/badge.svg?token=L2pTXu17kz)](https://codecov.io/gh/oat-sa/extension-tao-testqti)
+
 Extension to create QTI tests into TAO
 
 
@@ -26,7 +28,7 @@ Here is a list of known category options:
 REST API
 ========
 
-[QTI Test REST API](https://openapi.taotesting.com/viewer/?url=https://raw.githubusercontent.com/oat-sa/extension-tao-testqti/master/doc/swagger.json)
+[QTI Test REST API](https://editor.swagger.io/?url=https%3A%2F%2Fraw.githubusercontent.com%2Foat-sa%2Fextension-tao-testqti%2Fmaster%2Fdoc%2Fswagger.json)
 
 Results variables transmission
 ==============================
@@ -50,3 +52,12 @@ or manually updating DI config file `taoQtiTest/ResultTransmissionEventHandler` 
 
 return new oat\taoQtiTest\models\classes\eventHandler\ResultTransmissionEventHandler\AsynchronousResultTransmissionEventHandler();
 ```
+
+Environment variables
+=====================
+
+| Var                                           | Description                                                                         |
+|-----------------------------------------------|-------------------------------------------------------------------------------------|
+| FEATURE_FLAG_FORCE_DISPLAY_TEST_ITEM_FEEDBACK | Even if itemSessionControl `showFeedback` option is false, show item feedback modal |
+| FEATURE_FLAG_PAUSE_CONCURRENT_SESSIONS        | When set, forces restoring the timers state from the browser storage on test init   |
+| FEATURE_FLAG_MAINTAIN_RESTARTED_DELIVERY_EXECUTION_STATE | Typed environment variable, controlling whether a delivery execution state should be kept as is or reset each time it starts. If `"false"` the state will be reset on each restart. Default behavior. If `"true"` the state will be maintained upon a restart |

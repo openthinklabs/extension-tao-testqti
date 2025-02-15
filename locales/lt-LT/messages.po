@@ -1,17 +1,24 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 3.4.0-sprint146\n"
-"PO-Revision-Date: 2021-01-20T12:36:07\n"
+"Project-Id-Version: tao-open-source\n"
+"PO-Revision-Date: 2024-12-19 16:02\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
-"Language: lt-LT\n"
+"Language: lt\n"
 "sourceLanguage: en-US\n"
-"targetLanguage: lt-LT\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"targetLanguage: en-US\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Basepath: ../../\n"
 "X-Poedit-KeywordsList: __\n"
 "X-Poedit-SearchPath-0: .\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && (n%100>19 || n%100<11) ? 0 : (n%10>=2 && n%10<=9) && (n%100>19 || n%100<11) ? 1 : n%1!=0 ? 2: 3);\n"
+"X-Crowdin-Project: tao-open-source\n"
+"X-Crowdin-Project-ID: 590867\n"
+"X-Crowdin-Language: lt\n"
+"X-Crowdin-File: /[oat-sa.extension-tao-testqti] develop/locales/en-US/messages.po\n"
+"X-Crowdin-File-ID: 817\n"
+"Language-Team: Lithuanian\n"
 
 msgid "%s to answer %s"
 msgstr ""
@@ -20,6 +27,9 @@ msgid "(Visual) Clear all active highlights"
 msgstr ""
 
 msgid "(Visual) Highlight Text"
+msgstr ""
+
+msgid "A concurrent delivery has been detected. Please use the last open session. The present window can be closed."
 msgstr ""
 
 msgid "A QTI Item involved in the QTI Test '%s' could not be compiled."
@@ -46,6 +56,9 @@ msgstr "Pasitikrinkite ar teisingai įvedėte atsakymą."
 msgid "A visible section is one that is identifiable by the candidate."
 msgstr "Matomas skyrius yra kandidatui atpažįstamas."
 
+msgid "Accessibility tool that enables Test Taker to have the item content read aloud."
+msgstr ""
+
 msgid "Activated"
 msgstr "Aktyvuota"
 
@@ -57,6 +70,9 @@ msgstr "Pridėti ZIP failą turintį QTI/APIP testus ir elementus"
 
 msgid "Add selected item(s) here."
 msgstr "Įkelkite pažymėtus klausimus šioje vietoje"
+
+msgid "Add Subsection"
+msgstr ""
 
 msgid "Add the source file"
 msgstr "Pridėti šaltinio failą."
@@ -182,7 +198,7 @@ msgid "Are you sure you want to clear your answer and go to the next item? You w
 msgstr "Ar jūs tikrai norite išvalyti atsakymus ir eiti į sekantį elementą? Jūs negalėsite grįžti atgal ir pateikti atsakymą."
 
 msgid "Are you sure you want to end the test?"
-msgstr "Ar jūs tikrai norite užbaigti darbą?"
+msgstr "Ar jūs tikrai norite užbaigti testą?"
 
 msgid "Are you sure you want to go to the next item? You will not be able to go back and change your answer."
 msgstr "Ar jūs tikrai norite eiti į sekantį elementą? Jūs negalėsite grįžti atgal ir pakeisti atsakymą."
@@ -221,6 +237,15 @@ msgid "Black on Light Magenta"
 msgstr ""
 
 msgid "Black on White"
+msgstr ""
+
+msgid "Bookmark question"
+msgstr ""
+
+msgid "Bookmark the current question for later review"
+msgstr ""
+
+msgid "Bookmarked question %s"
 msgstr ""
 
 msgid "Calculator"
@@ -265,6 +290,9 @@ msgstr "Pašalinti visus aktyvius paryškinimus."
 msgid "Clear Highlights"
 msgstr "Pašalinti Paryškinimus."
 
+msgid "Click \"%s\" to continue"
+msgstr ""
+
 msgid "Click \"%s\" to continue."
 msgstr ""
 
@@ -272,7 +300,7 @@ msgid "Click to speak"
 msgstr "Spausti kad kalbėti"
 
 msgid "Close"
-msgstr ""
+msgstr "Uždaryti"
 
 msgid "Close Magnifier"
 msgstr "Uždaryti Didintuvą"
@@ -361,6 +389,9 @@ msgstr "Rodomas pavadinimas"
 msgid "Displays a customisable magnifier"
 msgstr "Didinimo įrankis"
 
+msgid "Do not bookmark the current question for later review"
+msgstr ""
+
 msgid "Do not flag the current item for later review"
 msgstr "Nežymėti šio elemento vėlesnei apžvalgai"
 
@@ -370,7 +401,7 @@ msgstr ""
 msgid "Do not show alert on timeout"
 msgstr "Nėrodyti įspėjimo pasibaigus laikui"
 
-msgid "Don\'t save"
+msgid "Don\\'t save"
 msgstr ""
 
 msgid "Download"
@@ -419,7 +450,7 @@ msgid "Enter a custom category"
 msgstr "Įvesti pasirinktiną kategoriją"
 
 msgid "Error"
-msgstr "Klaida"
+msgstr ""
 
 msgid "Error during file import"
 msgstr "Klaida failo importavimo metu"
@@ -432,11 +463,20 @@ msgstr "Rasta klaida IMS QTI Teste:\n"
 msgid "Expand the review panel"
 msgstr "Praplėsti apžvalgos skydelį"
 
+msgid "Export"
+msgstr ""
+
 msgid "Export failed for the test \"%s"
 msgstr "Nepavyko testo \"%s eksportavimas"
 
+msgid "Export failed. Key uri nor classUri in formValues are not defined"
+msgstr ""
+
 msgid "Export metadata"
 msgstr "Eksportuoti metaduomenis"
+
+msgid "Export QTI %s Test Package"
+msgstr ""
 
 msgid "Export QTI 2.1 Test Package"
 msgstr "Eksportuoti QTI 2.1 Testų Paketą"
@@ -507,6 +547,9 @@ msgstr ""
 msgid "Hide Review"
 msgstr "Slėpti apžvalgą"
 
+msgid "Hide test overview panel"
+msgstr ""
+
 msgid "Hide the review screen"
 msgstr "Slėpti apžvalgos ekraną"
 
@@ -558,6 +601,9 @@ msgstr ""
 msgid "If the connection cannot be restored, see option B."
 msgstr ""
 
+msgid "If you leave the test, your changes will not be saved due to invalid test settings. Are you sure you wish to leave?"
+msgstr ""
+
 msgid "If you need help, please contact our Helpline on 0330 088 4171."
 msgstr ""
 
@@ -571,7 +617,7 @@ msgid "Import QTI TEST into \"%s"
 msgstr "Importuoti QTI TEST į \"%s"
 
 msgid "IMS QTI Item referenced as \"%s\" in the IMS Manifest file could not be imported."
-msgstr "IMS QTI Elementas nurodytas kaip \"%s\" IMS Manifesto faile negali būti importuojamas."
+msgstr ""
 
 msgid "IMS QTI Item referenced as \"%s\" in the IMS Manifest file successfully imported."
 msgstr "IMS QTI Elementas nurodytas kaip \"%s\" IMS Manifesto faile sėkmingai importuotas."
@@ -590,6 +636,9 @@ msgstr "Neatitikimai %1d eilutėje:"
 
 msgid "Individual"
 msgstr "Individualus"
+
+msgid "Informational item"
+msgstr ""
 
 msgid "Informational Item Usage"
 msgstr "Informacinis Elemento Naudojimas"
@@ -634,7 +683,7 @@ msgid "items"
 msgstr "elementai"
 
 msgid "Items"
-msgstr "Elementai"
+msgstr "Klausimai"
 
 msgid "Items can optionally be assigned to one or more categories."
 msgstr "Elementai pasirinktinai gali būti paskirti vienai arba daugiau kategorijų."
@@ -702,11 +751,11 @@ msgstr "Tvarkyti Rubrikos Blokus"
 msgid "Manage test properties"
 msgstr "Tvarkyti testo savybes"
 
-#, tao-public
-msgid "Manage tests"
+msgid "Manage Tests"
 msgstr "Tvarkyti testus"
 
-msgid "Manage Tests"
+#, tao-public
+msgid "Manage tests"
 msgstr "Tvarkyti testus"
 
 msgid "Mark for review"
@@ -761,19 +810,25 @@ msgid "Minimum duration for this test part."
 msgstr "Minimali trukmė šio testo daliai."
 
 msgid "minutes"
+msgstr "minutės"
+
+msgid "Missed required parameter \\'id\\'"
 msgstr ""
 
-msgid "Missed required parameter \'id\'"
+msgid "Missed required parameter \\'id\\'"
 msgstr ""
 
 msgid "Missed test package file"
 msgstr "Nesurastas testo paketo failas"
 
+msgid "Missing filename for QTI Test export"
+msgstr ""
+
 msgid "Missing required configuration option %s"
 msgstr ""
 
 msgid "Move"
-msgstr ""
+msgstr "Perkelti"
 
 msgid "Move Down"
 msgstr "Perkelti Žemiau"
@@ -817,11 +872,17 @@ msgstr "Kitas skyrius"
 msgid "No"
 msgstr "Ne"
 
+msgid "NO"
+msgstr ""
+
 msgid "No CAT Engine configured for CAT Endpoint \"%s\"."
 msgstr ""
 
 msgid "No file found at location \"%s\"."
 msgstr "Joks failas nerastas \"%s\" vietoje."
+
+msgid "No instance in form to export"
+msgstr ""
 
 msgid "No more attempts allowed for item \"%s\"."
 msgstr "Daugiau nėra galimų bandymų \"%s\" elementui."
@@ -899,7 +960,7 @@ msgid "Ordering"
 msgstr "Eiliškumas"
 
 msgid "Outcome"
-msgstr ""
+msgstr "Pasekmė"
 
 msgid "Outcome declarations"
 msgstr ""
@@ -935,7 +996,7 @@ msgid "Please wait while we try to restore the connection."
 msgstr "Prašome palaukti, kol mes bandome atstatyti ryšį."
 
 msgid "Preview"
-msgstr ""
+msgstr "Peržiūra"
 
 msgid "Preview the covered area"
 msgstr "Peržiūrėti padengtą plotą"
@@ -950,7 +1011,7 @@ msgid "Proctor"
 msgstr "Proktorius"
 
 msgid "Properties"
-msgstr "Savybės"
+msgstr ""
 
 msgid "QTI 2.1 Test Driver"
 msgstr "QTI 2.1 Testų Tvarkyklė"
@@ -963,6 +1024,12 @@ msgstr "QTI Testo \"%s\" paskelbimas nesėkmingas."
 
 msgid "QTI Test \"%s\" successfully published."
 msgstr "QTI Testas \"%s\" sėkmingai paskelbtas."
+
+msgid "QTI Test Metadata"
+msgstr ""
+
+msgid "QTI Test Package %s"
+msgstr ""
 
 msgid "QTI Test Package 2.1"
 msgstr "QTI Testo Paketas 2.1"
@@ -977,6 +1044,9 @@ msgid "question"
 msgstr ""
 
 msgid "Question"
+msgstr "Klausimas"
+
+msgid "Question %s"
 msgstr ""
 
 msgid "questions"
@@ -1003,6 +1073,9 @@ msgstr "Pašalinti Rubrikos Bloką"
 msgid "Remove Section"
 msgstr "Pašalinti Skyrių"
 
+msgid "Remove Subsection"
+msgstr ""
+
 msgid "Remove Test Part"
 msgstr ""
 
@@ -1017,6 +1090,9 @@ msgstr "Atstatyti filtrus"
 
 msgid "Resource(s) successfully exported."
 msgstr "Resursas(-ai) sėkmingai eksportuoti."
+
+msgid "ResultTransmission event successfully registered"
+msgstr ""
 
 msgid "Review"
 msgstr "Apžvalga"
@@ -1048,10 +1124,10 @@ msgstr "Verintojas"
 msgid "Scoring"
 msgstr "Įvertinimas"
 
-msgid "Scratch pad"
+msgid "Scratch Pad"
 msgstr "Juodraštis"
 
-msgid "Scratch Pad"
+msgid "Scratch pad"
 msgstr "Juodraštis"
 
 msgid "Scratchpad"
@@ -1115,7 +1191,7 @@ msgid "SetSynchronisationService successfully configured."
 msgstr ""
 
 msgid "Settings"
-msgstr "Nustatymai"
+msgstr ""
 
 msgid "Show Feedback"
 msgstr "Rodyti Atsiliepimą"
@@ -1125,6 +1201,9 @@ msgstr "Rodyti Apžvalgą"
 
 msgid "Show Solution"
 msgstr "Rodyti Sprendimą"
+
+msgid "Show test overview panel"
+msgstr ""
 
 msgid "Show the review screen"
 msgstr "Rodyti apžvalgos ekraną"
@@ -1175,7 +1254,7 @@ msgid "Something unexpected happened."
 msgstr ""
 
 msgid "Something went wrong..."
-msgstr ""
+msgstr "Kažkas blogai nutiko..."
 
 msgid "Speech speed"
 msgstr "Kalbos greitis"
@@ -1205,7 +1284,7 @@ msgid "Submit and go to the end of the test"
 msgstr "Pateikti ir eiti į testo pabaigą"
 
 msgid "Submit and go to the item %s"
-msgstr ""
+msgstr "Pateikti atsakymą ir pereiti prie %s klausimo"
 
 msgid "Submit and go to the next item"
 msgstr "Pateikite atsakymą ir pereikite į kitą klausimą"
@@ -1233,6 +1312,12 @@ msgstr "Testo meta duomenys sėkmingai išeksportuoti."
 
 msgid "Test Navigation"
 msgstr "Testo Navigacija"
+
+msgid "Test overview"
+msgstr ""
+
+msgid "Test part level category enables configuring the categories of its composing items all at once. A category in gray means that all items have that category. A category in white means that only a few items have that category."
+msgstr ""
 
 msgid "Test Part Properties"
 msgstr ""
@@ -1284,7 +1369,7 @@ msgid "The assessment has been suspended by an authorized proctor. If you wish t
 msgstr "Vertinimas buvo suspenduotas autorizuoto proktoriaus. Jeigu norite tęsti vertinimą, prašome paleisti iš naujo ir jeigu reikia susisiekite su jūsų proktoriumi."
 
 msgid "The assessment has been suspended. To resume your assessment, please relaunch it and contact your proctor if required."
-msgstr "Jūsų vertinimas yra atidėtas. Kad tęsti jūsų įvertinimą, prašome pradėti iš naujo arba pranešti jūsų proktoriui, jeigu būtina."
+msgstr "Vertinimas buvo suspenduotas. Norint tęsti jūsų vertinimą, prašome paleisti iš naujo ir jeigu reikia susisiekite su jūsų proktoriumi."
 
 msgid "The assessment has been suspended. To resume your assessment, please relaunch it."
 msgstr "Vertinimas buvo suspenduotas. Norint tęsti, prašome pradėti iš naujo."
@@ -1293,7 +1378,7 @@ msgid "The assessment has been terminated."
 msgstr "Vertinimas buvo nutrauktas."
 
 msgid "The assessment has been terminated. You cannot interact with it anymore."
-msgstr "Vertinimas buvo nutrauktas. Jūs negalite tęsti jo daugiau."
+msgstr "Šis vertinimas buvo nutrauktas. Jūs negalite tęsti jo toliau."
 
 msgid "The assessment is still running."
 msgstr "Įvertinimas vis dar vykdomas."
@@ -1323,7 +1408,7 @@ msgid "The identifier of the section."
 msgstr "Skyriaus identifikatorius."
 
 msgid "The IMS QTI Item referenced as \"%s\" in the IMS Manifest file was already stored in the Item Bank."
-msgstr "IMS QTI Elementas nurodytas kaip \"%s\" IMS Manifesto faile jau buvo patalpintas Elementų Banke."
+msgstr ""
 
 msgid "The IMS QTI Test Package could not be imported."
 msgstr "IMS QTI Testo Paketas negali būti importuotas."
@@ -1348,6 +1433,9 @@ msgstr "Pagrindinis testo identifikatorius."
 
 msgid "The provided archive is invalid. Make sure it is not corrupted and that it contains an 'imsmanifest.xml' file."
 msgstr "Pateiktas archyvas yra blogas. Patikrinkite ar jis nesugadintas ir turi „imsmanifest.xml“ failą."
+
+msgid "The QTI Item with URI '%s' cannot be found."
+msgstr ""
 
 msgid "The QTI Test '%s' to be compiled must contain at least 1 QTI Item. None found."
 msgstr "QTI Testas '%s' surinkimui privalo turėti bent 1 QTI Elementą. Joks nebuvo surastas."
@@ -1377,6 +1465,13 @@ msgid "The section title."
 msgstr "Skyriaus pavadinimas."
 
 msgid "The submission mode determines when the candidate's responses are submitted for response processing. A testPart in individual mode requires the candidate to submit their responses on an item-by-item basis. In simultaneous mode the candidate's responses are all submitted together at the end of the testPart."
+msgstr ""
+
+msgid "The test cannot be saved because it currently contains invalid settings.\n"
+msgstr ""
+
+msgid "The test cannot be saved because it currently contains invalid settings.\n"
+"Please fix the invalid settings and try again."
 msgstr ""
 
 msgid "The test has been closed/suspended!"
@@ -1599,6 +1694,9 @@ msgstr ""
 msgid "Yes"
 msgstr "Taip"
 
+msgid "YES"
+msgstr ""
+
 msgid "You answered %s of %s question(s) for this section of the test"
 msgstr ""
 
@@ -1676,4 +1774,10 @@ msgstr "Priartinti"
 
 msgid "Zoom out"
 msgstr "Atitolinti"
+
+msgid "Enforce Item Constraints"
+msgstr ""
+
+msgid "Checking this box prevents the test-taker from navigating to other items until the current item constraints, if any, are met. Unchecking this box will allow free navigation even if the responses don't comply with the item constraints set."
+msgstr ""
 

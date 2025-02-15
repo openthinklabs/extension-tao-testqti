@@ -1,24 +1,57 @@
 <div id="section-props-{{identifier}}" class="section-props props clearfix">
+    {{#if translation}}<hr />{{/if}}
+
     <h3>{{title}}</h3>
 
-<!-- assessmentTest/testPart/assessmentSection/identifier -->
+    {{#if showIdentifier}}
+        <!-- assessmentTest/testPart/assessmentSection/identifier -->
+        <div class="grid-row">
+            <div class="col-5">
+                <label for="section-identifier">{{__ 'Identifier'}} <abbr title="{{__ 'Required field'}}">*</abbr></label>
+                <span id="props-{{identifier}}" data-bind="identifier" style="display: none;">{{identifier}}</span>
+            </div>
+            <div class="col-6">
+                <input type="text" id="section-identifier"{{#if translation}} readonly{{/if}} data-bind="identifier" data-validate="$notEmpty; $idFormat; $testIdAvailable(identifier={{identifier}});" />
+            </div>
+            <div class="col-1 help">
+                <span class="icon-help" data-tooltip="~ .tooltip-content" data-tooltip-theme="info"></span>
+                <div class="tooltip-content">
+                {{__ 'The identifier of the section.'}}
+                </div>
+            </div>
+        </div>
+    {{/if}}
+
+<!-- assessmentTest/testPart/assessmentSection/title -->
+{{#if translation}}
     <div class="grid-row">
         <div class="col-5">
-            <label for="section-identifier">{{__ 'Identifier'}} <abbr title="{{__ 'Required field'}}">*</abbr></label>
-            <span id="props-{{identifier}}" data-bind="identifier" style="display: none;">{{identifier}}</span>
+            <label for="section-title">{{__ 'Translated title'}} <abbr title="{{__ 'Required field'}}">*</abbr></label>
         </div>
         <div class="col-6">
-            <input type="text" id="section-identifier" data-bind="identifier" data-validate="$notEmpty; $idFormat; $testIdAvailable(identifier={{identifier}});" />
+            <input type="text" id="section-title" data-bind="title" data-validate="$notEmpty" />
         </div>
         <div class="col-1 help">
             <span class="icon-help" data-tooltip="~ .tooltip-content" data-tooltip-theme="info"></span>
             <div class="tooltip-content">
-            {{__ 'The identifier of the section.'}}
+            {{__ 'The translated section title.'}}
+            </div>
+        </div>
+    </div><div class="grid-row">
+        <div class="col-5">
+            <label for="section-origin-title">{{__ 'Original title'}}</label>
+        </div>
+        <div class="col-6">
+            <input type="text" id="section-origin-title" value="{{originTitle}}" readonly />
+        </div>
+        <div class="col-1 help">
+            <span class="icon-help" data-tooltip="~ .tooltip-content" data-tooltip-theme="info"></span>
+            <div class="tooltip-content">
+                {{__ 'The original title of the section.'}}
             </div>
         </div>
     </div>
-
-<!-- assessmentTest/testPart/assessmentSection/title -->
+{{else}}
     <div class="grid-row">
         <div class="col-5">
             <label for="section-title">{{__ 'Title'}} <abbr title="{{__ 'Required field'}}">*</abbr></label>
@@ -33,10 +66,9 @@
             </div>
         </div>
     </div>
-
-{{!-- Property not yet available in delivery
+    {{#if isSubsection}}
 <!-- assessmentTest/testPart/assessmentSection/required -->
-    <div class="grid-row pseudo-label-box">
+    <div class="grid-row pseudo-label-box checkbox-row">
         <div class="col-5">
             <label for="section-required">{{__ 'Required'}}</label>
         </div>
@@ -49,15 +81,15 @@
         <div class="col-1 help">
             <span class="icon-help" data-tooltip="~ .tooltip-content" data-tooltip-theme="info"></span>
             <div class="tooltip-content">
-            {{__ 'If required, it must appears at least once in the selection.'}}
+            {{__ 'If required it must appear (at least once) in the selection.'}}
             </div>
         </div>
     </div>
---}}
+    {{/if}}
 
 {{!-- Property not yet available in delivery
 <!-- assessmentTest/testPart/assessmentSection/fixed -->
-    <div class="grid-row pseudo-label-box">
+    <div class="grid-row pseudo-label-box checkbox-row">
         <div class="col-5">
             <label for="section-fixed">{{__ 'Fixed'}}</label>
         </div>
@@ -76,8 +108,9 @@
     </div>
 --}}
 
-<!-- assessmentTest/testPart/assessmentSection/visible -->
-    <div class="grid-row pseudo-label-box">
+    {{#if showVisible}}
+    <!-- assessmentTest/testPart/assessmentSection/visible -->
+    <div class="grid-row pseudo-label-box checkbox-row">
         <div class="col-5">
             <label for="section-visible">{{__ 'Visible'}} <abbr title="{{__ 'Required field'}}">*</abbr></label>
         </div>
@@ -94,26 +127,29 @@
             </div>
         </div>
     </div>
+    {{/if}}
 
-<!-- assessmentTest/testPart/assessmentSection/keepTogether -->
-    <div class="grid-row pseudo-label-box">
-        <div class="col-5">
-            <label for="section-keep-together">{{__ 'Keep Together'}}</label>
-        </div>
+    {{#if showKeepTogether}}
+        <!-- assessmentTest/testPart/assessmentSection/keepTogether -->
+        <div class="grid-row pseudo-label-box checkbox-row">
+            <div class="col-5">
+                <label for="section-keep-together">{{__ 'Keep Together'}}</label>
+            </div>
 
-        <div class="col-6">
-            <label>
-                <input type="checkbox" name="section-keep-together" value="true" checked="checked"  data-bind="keepTogether" data-bind-encoder="boolean" />
-                <span class="icon-checkbox"></span>
-            </label>
-        </div>
-        <div class="col-1 help">
-            <span class="icon-help" data-tooltip="~ .tooltip-content" data-tooltip-theme="info"></span>
-            <div class="tooltip-content">
-            {{__ 'An invisible section with a parent that is subject to shuffling can specify whether or not its children, which will appear to the candidate as if they were part of the parent, are shuffled as a block or mixed up with the other children of the parent section.'}}
+            <div class="col-6">
+                <label>
+                    <input type="checkbox" name="section-keep-together" value="true" checked="checked"  data-bind="keepTogether" data-bind-encoder="boolean" />
+                    <span class="icon-checkbox"></span>
+                </label>
+            </div>
+            <div class="col-1 help">
+                <span class="icon-help" data-tooltip="~ .tooltip-content" data-tooltip-theme="info"></span>
+                <div class="tooltip-content">
+                {{__ 'An invisible section with a parent that is subject to shuffling can specify whether or not its children, which will appear to the candidate as if they were part of the parent, are shuffled as a block or mixed up with the other children of the parent section.'}}
+                </div>
             </div>
         </div>
-    </div>
+    {{/if}}
 
     {{#if hasBlueprint}}
     <div class="grid-row pseudo-label-box">
@@ -158,7 +194,7 @@
 <!-- assessmentTest/testPart/assessmentSection/selection -->
     <div class="section-selection toggled">
 
-        <div class="grid-row pseudo-label-box">
+        <div class="grid-row pseudo-label-box checkbox-row">
             <div class="col-5">
                 <label for="section-enable-selection">{{__ 'Enable selection'}}</label>
             </div>
@@ -187,8 +223,9 @@
             </div>
         </div>
 
+        {{#if hasSelectionWithReplacement}}
 <!-- assessmentTest/testPart/assessmentSection/selection/withReplacement -->
-        <div class="grid-row pseudo-label-box">
+        <div class="grid-row pseudo-label-box checkbox-row">
             <div class="col-5">
                 <label for="section-with-replacement">{{__ 'With Replacement'}}</label>
             </div>
@@ -206,6 +243,7 @@
                 </div>
             </div>
         </div>
+        {{/if}}
     </div>
 
     <h4 class="toggler closed" data-toggle="~ .section-ordering">{{__ 'Ordering'}}</h4>
@@ -213,7 +251,7 @@
 <!-- assessmentTest/testPart/assessmentSection/ordering -->
     <div class="section-ordering toggled">
 <!-- assessmentTest/testPart/assessmentSection/ordering/shuffle -->
-        <div class="grid-row pseudo-label-box">
+        <div class="grid-row pseudo-label-box checkbox-row">
             <div class="col-5">
                 <label for="section-shuffle">{{__ 'Shuffle'}}</label>
             </div>
@@ -239,10 +277,10 @@
     <div class="section-item-session-control toggled">
 <!-- assessmentTest/testPart/assessmentSection/itemSessionControl/maxAttempts -->
         <div class="grid-row">
-            <div class="col-5">
+            <div class="col-6">
                 <label for="section-max-attempts">{{__ 'Max Attempts'}}</label>
             </div>
-            <div class="col-6">
+            <div class="col-5">
                 <input
                         id="section-max-attempts"
                         type="text"
@@ -264,11 +302,11 @@
 
 <!-- assessmentTest/testPart/assessmentSection/itemSessionControl/showFeedback -->
         {{#if itemSessionShowFeedback}}
-            <div class="grid-row pseudo-label-box">
-                <div class="col-5">
+            <div class="grid-row pseudo-label-box checkbox-row">
+                <div class="col-6">
                     <label for="section-show-feedback">{{__ 'Show Feedback'}}</label>
                 </div>
-                <div class="col-6">
+                <div class="col-5">
                     <label>
                         <input type="checkbox" name="section-show-feedback" value="true" data-bind="itemSessionControl.showFeedback" data-bind-encoder="boolean" />
                         <span class="icon-checkbox"></span>
@@ -285,11 +323,11 @@
 
 {{!-- Property not yet available in delivery
 <!-- assessmentTest/testPart/assessmentSection/itemSessionControl/allowReview -->
-        <div class="grid-row pseudo-label-box">
-            <div class="col-5">
+        <div class="grid-row pseudo-label-box checkbox-row">
+            <div class="col-6">
                 <label for="section-show-allow-review">{{__ 'Allow Review'}}</label>
             </div>
-            <div class="col-6">
+            <div class="col-5">
                 <label>
                     <input type="checkbox" name="section-allow-review" value="true" checked="checked" data-bind="itemSessionControl.allowReview" data-bind-encoder="boolean" />
                     <span class="icon-checkbox"></span>
@@ -306,11 +344,11 @@
 
 {{!-- Property not yet available in delivery
 <!-- assessmentTest/testPart/assessmentSection/itemSessionControl/showSolution -->
-        <div class="grid-row pseudo-label-box">
-            <div class="col-5">
+        <div class="grid-row pseudo-label-box checkbox-row">
+            <div class="col-6">
                 <label for="section-show-solution">{{__ 'Show Solution'}}</label>
             </div>
-            <div class="col-6">
+            <div class="col-5">
                 <label>
                     <input type="checkbox" name="section-show-solution" value="true"  data-bind="itemSessionControl.showSolution" data-bind-encoder="boolean" />
                     <span class="icon-checkbox"></span>
@@ -327,11 +365,11 @@
 
 <!-- assessmentTest/testPart/assessmentSection/itemSessionControl/allowComment -->
         {{#if itemSessionAllowComment}}
-            <div class="grid-row pseudo-label-box">
-                <div class="col-5">
+            <div class="grid-row pseudo-label-box checkbox-row">
+                <div class="col-6">
                     <label for="section-allow-comment">{{__ 'Allow Comment'}}</label>
                 </div>
-                <div class="col-6">
+                <div class="col-5">
                     <label>
                         <input type="checkbox" name="section-allow-comment" value="true"  data-bind="itemSessionControl.allowComment" data-bind-encoder="boolean" />
                         <span class="icon-checkbox"></span>
@@ -348,11 +386,11 @@
 
 <!-- assessmentTest/testPart/assessmentSection/itemSessionControl/allowSkipping -->
         {{#if itemSessionAllowSkipping}}
-            <div class="grid-row pseudo-label-box">
-                <div class="col-5">
+            <div class="grid-row pseudo-label-box checkbox-row">
+                <div class="col-6">
                     <label for="section-allow-skipping">{{__ 'Allow Skipping'}}</label>
                 </div>
-                <div class="col-6">
+                <div class="col-5">
                     <label>
                         <input type="checkbox" name="section-allow-skipping" value="true" checked="checked" data-bind="itemSessionControl.allowSkipping" data-bind-encoder="boolean" />
                         <span class="icon-checkbox"></span>
@@ -367,24 +405,26 @@
             </div>
         {{/if}}
 
-<!-- assessmentTest/testPart/assessmentSection/itemSessionControl/validateResponses -->
-        <div class="grid-row pseudo-label-box">
-            <div class="col-5">
-                <label for="section-validate-responses">{{__ 'Validate Responses'}}</label>
-            </div>
-            <div class="col-6">
-                <label>
-                    <input type="checkbox" name="section-validate-responses" value="true" data-bind="itemSessionControl.validateResponses" data-bind-encoder="boolean" />
-                    <span class="icon-checkbox"></span>
-                </label>
-            </div>
-            <div class="col-1 help">
-                <span class="icon-help" data-tooltip="~ .tooltip-content" data-tooltip-theme="info"></span>
-                <div class="tooltip-content">
-                {{__ "The candidate is not allowed to submit invalid responses."}}
+        {{#if validateResponsesVisible}}
+            <!-- assessmentTest/testPart/assessmentSection/itemSessionControl/validateResponses -->
+            <div class="grid-row pseudo-label-box checkbox-row">
+                <div class="col-6">
+                    <label for="section-validate-responses">{{__ 'Enforce Item Constraints'}}</label>
+                </div>
+                <div class="col-5">
+                    <label>
+                        <input type="checkbox" name="section-validate-responses" value="true" data-bind="itemSessionControl.validateResponses" data-bind-encoder="boolean" />
+                        <span class="icon-checkbox"></span>
+                    </label>
+                </div>
+                <div class="col-1 help">
+                    <span class="icon-help" data-tooltip="~ .tooltip-content" data-tooltip-theme="info"></span>
+                    <div class="tooltip-content">
+                    {{__ "Checking this box prevents the test-taker from navigating to other items until the current item constraints, if any, are met. Unchecking this box will allow free navigation even if the responses don't comply with the item constraints set."}}
+                    </div>
                 </div>
             </div>
-        </div>
+        {{/if}}
 
     </div>
 
@@ -429,24 +469,27 @@
                 </div>
             </div>
 
-    <!-- assessmentTest/testPart/assessmentSection/timeLimits/allowLateSubmission -->
-            <div class="grid-row pseudo-label-box">
-                <div class="col-5">
-                    <label for="section-allow-late-submission">{{__ 'Late submission allowed'}}</label>
-                </div>
-                <div class="col-6">
-                    <label>
-                        <input type="checkbox" name="section-allow-late-submission" value="true" data-bind="timeLimits.allowLateSubmission" data-bind-encoder="boolean" />
-                        <span class="icon-checkbox"></span>
-                    </label>
-                </div>
-                <div class="col-1 help">
-                    <span class="icon-help" data-tooltip="~ .tooltip-content" data-tooltip-theme="info"></span>
-                    <div class="tooltip-content">
-                    {{__ "Whether a candidate's response that is beyond the maximum duration of the section should still be accepted."}}
+            {{#if lateSubmission}}
+            <!-- assessmentTest/testPart/assessmentSection/timeLimits/allowLateSubmission -->
+                <div class="grid-row pseudo-label-box checkbox-row">
+                    <div class="col-5">
+                        <label for="section-allow-late-submission">{{__ 'Late submission allowed'}}</label>
+                    </div>
+                    <div class="col-6">
+                        <label>
+                            <input type="checkbox" name="section-allow-late-submission" value="true" data-bind="timeLimits.allowLateSubmission" data-bind-encoder="boolean" />
+                            <span class="icon-checkbox"></span>
+                        </label>
+                    </div>
+                    <div class="col-1 help">
+                        <span class="icon-help" data-tooltip="~ .tooltip-content" data-tooltip-theme="info"></span>
+                        <div class="tooltip-content">
+                        {{__ "Whether a candidate's response that is beyond the maximum duration of the section should still be accepted."}}
+                        </div>
                     </div>
                 </div>
-            </div>
+            {{/if}}
         </div>
     {{/if}}
+{{/if}}
 </div>

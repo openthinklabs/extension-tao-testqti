@@ -22,10 +22,14 @@
 use oat\oatbox\event\EventManagerAwareTrait;
 use oat\oatbox\PhpSerializable;
 use oat\oatbox\PhpSerializeStateless;
+use oat\tao\model\featureFlag\FeatureFlagChecker;
 use oat\tao\model\import\ImportHandlerHelperTrait;
 use oat\tao\model\import\TaskParameterProviderInterface;
+use oat\tao\model\upload\UploadService;
+use oat\taoQtiTest\models\classes\metadata\MetadataLomService;
 use oat\taoQtiTest\models\event\QtiTestImportEvent;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
+use taoQtiTest_models_classes_import_TestImportForm as TestImportForm;
 
 /**
  * Import handler for QTI packages
@@ -34,7 +38,11 @@ use Zend\ServiceManager\ServiceLocatorAwareInterface;
  * @author  Joel Bout, <joel@taotesting.com>
  * @package taoQTI
  */
-class taoQtiTest_models_classes_import_TestImport implements tao_models_classes_import_ImportHandler, PhpSerializable, ServiceLocatorAwareInterface, TaskParameterProviderInterface
+class taoQtiTest_models_classes_import_TestImport implements
+    tao_models_classes_import_ImportHandler,
+    PhpSerializable,
+    ServiceLocatorAwareInterface,
+    TaskParameterProviderInterface
 {
     use PhpSerializeStateless;
     use EventManagerAwareTrait;
@@ -74,7 +82,14 @@ class taoQtiTest_models_classes_import_TestImport implements tao_models_classes_
             // The zip extraction is a long process that can exceed the 30s timeout
             helpers_TimeOutHelper::setTimeOutLimit(helpers_TimeOutHelper::LONG);
 
-            $report = taoQtiTest_models_classes_QtiTestService::singleton()->importMultipleTests($class, $uploadedFile);
+            $report = taoQtiTest_models_classes_QtiTestService::singleton()
+                ->importMultipleTests(
+                    $class,
+                    $uploadedFile,
+                    false,
+                    $form[TestImportForm::ITEM_CLASS_DESTINATION_FIELD] ?? null,
+                    $form
+                );
 
             helpers_TimeOutHelper::reset();
 
@@ -88,5 +103,24 @@ class taoQtiTest_models_classes_import_TestImport implements tao_models_classes_
         } catch (Exception $e) {
             return common_report_Report::createFailure($e->getMessage());
         }
+    }
+    public function getTaskParameters(tao_helpers_form_Form $importForm)
+    {
+        $file = $this->getUploadService()->getUploadedFlyFile($importForm->getValue('importFile')
+            ?: $importForm->getValue('source')['uploaded_file']);
+
+        return [
+            'uploaded_file' => $file->getPrefix(), // because of Async, we need the full path of the uploaded file
+            TestImportForm::METADATA_FORM_ELEMENT_NAME => $importForm->getValue(
+                TestImportForm::METADATA_FORM_ELEMENT_NAME
+            ),
+            TestImportForm::ITEM_CLASS_DESTINATION_FIELD => $importForm->getValue(
+                TestImportForm::ITEM_CLASS_DESTINATION_FIELD
+            )
+        ];
+    }
+    private function getUploadService()
+    {
+        return $this->serviceLocator->get(UploadService::SERVICE_ID);
     }
 }

@@ -13,7 +13,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2021-2022 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
+ * Copyright (c) 2021-2024 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
  */
 
 define([
@@ -32,7 +32,10 @@ define([
     'taoQtiTest/controller/creator/helpers/sectionBlueprints',
     'ui/dialog/confirm',
     'taoQtiTest/controller/creator/helpers/subsection',
-    'taoQtiTest/controller/creator/helpers/validators'
+    'taoQtiTest/controller/creator/helpers/validators',
+    'taoQtiTest/controller/creator/helpers/translation',
+    'services/features',
+    'tpl!taoQtiTest/controller/creator/templates/translation-status'
 ], function (
     $,
     _,
@@ -49,7 +52,10 @@ define([
     sectionBlueprint,
     confirmDialog,
     subsectionsHelper,
-    validators
+    validators,
+    translationHelper,
+    servicesFeatures,
+    translationStatusTpl
 ) {
     'use strict';
     /**
@@ -61,6 +67,7 @@ define([
      * @param {jQuery} $subsection - the subsection to set up
      */
     function setUp(creatorContext, subsectionModel, sectionModel, $subsection) {
+        const defaultsConfigs = defaults();
         // select elements for subsection, to avoid selecting the same elements in nested subsections
         const $itemRefsWrapper = $subsection.children('.itemrefs-wrapper');
         const $rubBlocks = $subsection.children('.rublocks');
@@ -74,13 +81,19 @@ define([
             subsectionModel.itemSessionControl = {};
         }
         if (!subsectionModel.categories) {
-            subsectionModel.categories = defaults().categories;
+            subsectionModel.categories = defaultsConfigs.categories;
         }
         _.defaults(subsectionModel.itemSessionControl, sectionModel.itemSessionControl);
 
         if (!_.isEmpty(config.routes.blueprintsById)) {
             subsectionModel.hasBlueprint = true;
         }
+        subsectionModel.isSubsection = true;
+        sectionModel.hasSelectionWithReplacement = servicesFeatures.isVisible(
+            'taoQtiTest/creator/properties/selectionWithReplacement',
+            false
+        );
+
         actions.properties($titleWithActions, 'section', subsectionModel, propHandler);
         actions.move($titleWithActions, 'subsections', 'subsection');
         actions.displayItemWrapper($subsection);
@@ -205,16 +218,24 @@ define([
                 if (!subsectionModel.sectionParts[index]) {
                     subsectionModel.sectionParts[index] = {};
                 }
+                const itemRef = subsectionModel.sectionParts[index];
 
-                itemRefView.setUp(
-                    creatorContext,
-                    subsectionModel.sectionParts[index],
-                    subsectionModel,
-                    sectionModel,
-                    $itemRef
-                );
+                itemRefView.setUp(creatorContext, itemRef, subsectionModel, sectionModel, $itemRef);
                 $itemRef.find('.title').text(config.labels[uri.encode($itemRef.data('uri'))]);
+                showItemTranslationStatus(itemRef, $itemRef);
             });
+        }
+
+        /**
+         * Show the translation status of the item ref in the view (if translation is enabled).
+         * @param {object} itemRef
+         * @param {string} $itemRef
+         */
+        function showItemTranslationStatus(itemRef, $itemRef) {
+            if (itemRef.translation) {
+                const badgeInfo = translationHelper.getTranslationStatusBadgeInfo(itemRef.translationStatus);
+                $itemRef.find('.translation-status').html(translationStatusTpl(badgeInfo));
+            }
         }
 
         /**
@@ -247,7 +268,7 @@ define([
                             }
 
                             //the itemRef should also "inherit"  default categories set at the item level
-                            defaultItemData.categories = _.clone(defaults().categories) || [];
+                            defaultItemData.categories = _.clone(defaultsConfigs.categories) || [];
 
                             _.forEach(selection, function (item) {
                                 const itemData = _.defaults(
@@ -291,14 +312,39 @@ define([
                             const index = $itemRef.data('bind-index');
                             const itemRefModel = subsectionModel.sectionParts[index];
 
-                            //initialize the new item ref
-                            itemRefView.setUp(creatorContext, itemRefModel, subsectionModel, sectionModel, $itemRef);
+                            return Promise.resolve()
+                                .then(() => {
+                                    if (subsectionModel.translation) {
+                                        itemRefModel.translation = true;
+                                        return translationHelper
+                                            .getResourceTranslationStatus(
+                                                itemRefModel.href,
+                                                config.translationLanguageUri
+                                            )
+                                            .then(
+                                                ([translationStatus]) =>
+                                                    (itemRefModel.translationStatus =
+                                                        translationStatus && translationStatus.status)
+                                            );
+                                    }
+                                })
+                                .then(() => {
+                                    //initialize the new item ref
+                                    itemRefView.setUp(
+                                        creatorContext,
+                                        itemRefModel,
+                                        subsectionModel,
+                                        sectionModel,
+                                        $itemRef
+                                    );
+                                    showItemTranslationStatus(itemRefModel, $itemRef);
 
-                            /**
-                             * @event modelOverseer#item-add
-                             * @param {Object} itemRefModel
-                             */
-                            modelOverseer.trigger('item-add', itemRefModel);
+                                    /**
+                                     * @event modelOverseer#item-add
+                                     * @param {Object} itemRefModel
+                                     */
+                                    modelOverseer.trigger('item-add', itemRefModel);
+                                });
                         }
                     }
                 );
@@ -387,6 +433,16 @@ define([
                             const index = $rubricBlock.data('bind-index');
                             const rubricModel = subsectionModel.rubricBlocks[index] || {};
 
+                            if (subsectionModel.translation) {
+                                const originIdentifiers = translationHelper.registerModelIdentifiers(
+                                    config.originModel
+                                );
+                                const originSection = originIdentifiers[subsectionModel.identifier];
+                                const originRubricModel = originSection.rubricBlocks[index];
+                                rubricModel.translation = true;
+                                rubricModel.originContent = (originRubricModel && originRubricModel.content) || [];
+                            }
+
                             $('.rubricblock-binding', $rubricBlock).html('<p>&nbsp;</p>');
                             rubricBlockView.setUp(creatorContext, rubricModel, $rubricBlock);
 
@@ -418,7 +474,7 @@ define([
             });
 
             $view.on('set-default-categories', function () {
-                subsectionModel.categories = defaults().categories;
+                subsectionModel.categories = defaultsConfigs.categories;
                 updateFormState(categorySelector);
             });
 
@@ -533,10 +589,13 @@ define([
                             'assessmentSection',
                             'subsection'
                         ),
-                        title: defaults().sectionTitlePrefix,
+                        title: defaultsConfigs.sectionTitlePrefix,
                         index: 0,
                         sectionParts,
-                        visible: true
+                        visible: true,
+                        itemSessionControl: {
+                            maxAttempts: defaultsConfigs.maxAttempts
+                        }
                     });
                 },
                 checkAndCallAdd: function (executeAdd) {
@@ -551,7 +610,7 @@ define([
                             subsectionIndex,
                             subsectionModel.title,
                             `${subsectionIndex}1.`,
-                            defaults().sectionTitlePrefix
+                            defaultsConfigs.sectionTitlePrefix
                         );
                         const acceptFunction = () => {
                             // trigger deleted event for each itemfer to run removePropHandler and remove propView
@@ -609,6 +668,12 @@ define([
                         if ($subsection.data('movedCategories')) {
                             sub2sectionModel.categories = $subsection.data('movedCategories');
                             $subsection.removeData('movedCategories');
+                        }
+
+                        if (subsectionModel.translation) {
+                            const originIdentifiers = translationHelper.registerModelIdentifiers(config.originModel);
+                            const originSection = originIdentifiers[sub2sectionModel.identifier];
+                            translationHelper.setTranslationFromOrigin(sub2sectionModel, originSection);
                         }
 
                         // initialize the new subsection

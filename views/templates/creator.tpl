@@ -1,4 +1,4 @@
-<div id="test-creator" data-content-target="wide">
+<div class="<?=get_data('translation') !== 'false' ? 'side-by-side-authoring' : ''?>" id="test-creator" data-content-target="wide">
 
 <!-- left section: items selection -->
     <section class="test-creator-sidebar test-creator-area test-creator-items">
@@ -19,23 +19,17 @@
 <!-- test editor  -->
     <section class="test-creator-test test-creator-area test-creator-content">
         <div class="action-bar plain content-action-bar horizontal-action-bar">
-            <ul class="action-group plain clearfix authoring-back-box item-editor-menu">
+            <ul class="test-editor-menu action-group plain clearfix authoring-back-box item-editor-menu">
                 <li id="saver" class="btn-info small" data-testid="save-test">
                     <span class="li-inner">
                         <span class="icon-save"></span>
                         <?=__('Save')?>
                     </span>
                 </li>
-                <li id="previewer" class="btn-info small" data-testid="preview-test">
-                    <span class="li-inner">
-                        <span class="icon-preview"></span>
-                        <?=__('Preview')?>
-                    </span>
-                </li>
             </ul>
         </div>
         <h1><span data-bind="title"></span>
-            <span class="icon-warning"></span>
+            <span class="icon-warning configuration-issue"></span>
             <div class="actions">
                 <div class="tlb">
                     <div class="tlb-top">
@@ -56,9 +50,11 @@
         </h1>
         <div class="test-content">
             <div class="testparts" data-bind-each="testParts" data-bind-tmpl="testpart"> </div>
+<?php if (get_data('translation') === 'false'): ?>
             <button class="btn-info small testpart-adder button-add" data-testid="add-test-part">
                 <span class="icon-add"></span><?=__('New test part')?>
             </button>
+<?php endif; ?>
         </div>
     </section>
 
@@ -77,11 +73,14 @@ requirejs.config({
         'taoQtiTest/controller/creator/creator' : {
             routes : {
                 get  : '<?=get_data('loadUrl')?>',
+                getOrigin  : '<?=get_data('loadOriginUrl')?>',
                 save  : '<?=get_data('saveUrl')?>',
                 blueprintsById : '<?=get_data('blueprintsByIdUrl')?>',
                 blueprintByTestSection : '<?=get_data('blueprintsByTestSectionUrl')?>',
                 identifier : '<?=get_data('identifierUrl')?>'
             },
+            translation : <?=get_data('translation')?>,
+            originResourceUri : <?=get_data('originResourceUri')?>,
             categoriesPresets : <?=get_data('categoriesPresets')?>,
             labels : <?=get_data('labels')?>,
             guidedNavigation : <?=get_data('guidedNavigation')?>
