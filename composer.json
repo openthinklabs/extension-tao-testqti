@@ -1,5 +1,5 @@
 {
-  "name": "oat-sa/extension-tao-testqti",
+  "name": "openthinklabs/extension-tao-testqti",
   "description": "extension to create QTI tests",
   "type": "tao-extension",
   "authors": [
