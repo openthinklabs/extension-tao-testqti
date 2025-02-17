@@ -62,7 +62,7 @@
     "ext-zip": "*",
     "openthinklabs/lib-test-cat": "dev-master",
     "openthinklabs/oatbox-extension-installer": "dev-master",
-    "qtism/qtism": ">=0.28.7",
+    "qtism/qtism": "dev-master",
     "openthinklabs/generis": "dev-master",
     "openthinklabs/tao-core": "dev-master",
     "openthinklabs/extension-tao-item": "dev-master",
