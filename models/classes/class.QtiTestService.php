@@ -1609,17 +1609,21 @@ class taoQtiTest_models_classes_QtiTestService extends TestService
     {
         $generator = $this->getIdentifierGenerator();
         $testLabel = $test->getLabel();
-
+    
         if ($generator) {
             return $generator->generate([IdentifierGeneratorInterface::OPTION_RESOURCE => $test]);
         }
-
-        $identifier = null;
-
+    
+        // Ensure identifier is always a string
+        $identifier = $testLabel;
         if (preg_match('/^\d/', $testLabel)) {
             $identifier = 't_' . $testLabel;
         }
-
+        // Or fallback to a default if label is empty
+        if (empty($identifier)) {
+            $identifier = 'default_identifier';
+        }
+    
         return str_replace('_', '-', Format::sanitizeIdentifier($identifier));
     }
 
