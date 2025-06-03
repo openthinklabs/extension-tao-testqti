@@ -36,7 +36,7 @@ class QtiFlysystemFileManager extends ConfigurableService implements FileManager
         $this->filePrefix = $filePrefix;
     }
 
-    public function createFromFile($path, $mimeType, $filename = '')
+    public function createFromFile($path, $mimeType, $filename = ''): QtiFile
     {
         $id = $this->generateId();
         $this->getFileSystem()->write($id, file_get_contents($path));
@@ -50,8 +50,8 @@ class QtiFlysystemFileManager extends ConfigurableService implements FileManager
 
         return $file;
     }
-
-    public function createFromData($data, $mimeType, $filename = '')
+   
+    public function createFromData($data, $mimeType, $filename = '', $path = null): QtiFile
     {
         $id = $this->generateId();
         $this->getFileSystem()->write($id, $data);
@@ -66,7 +66,7 @@ class QtiFlysystemFileManager extends ConfigurableService implements FileManager
         return $file;
     }
 
-    public function retrieve($identifier)
+    public function retrieve($identifier, $filename = null)
     {
         $file = new QtiFlysystemFile('taoQtiTestSessionFilesystem', $identifier);
         $file->setServiceLocator($this->getServiceLocator());
