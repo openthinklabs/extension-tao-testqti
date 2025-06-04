@@ -22,10 +22,14 @@ class QtiIdentifierGenerator implements IdentifierGeneratorInterface
         $resource = $this->getResource($options);
         $label = $resource->getLabel();
 
-        $identifier = null;
+        $identifier = $label;
 
         if (preg_match('/^\d/', $label)) {
             $identifier = 't_' . $label;
+        }
+
+        if (empty($identifier)) {
+            $identifier = 'default_identifier';
         }
 
         return str_replace('_', '-', Format::sanitizeIdentifier($identifier));
