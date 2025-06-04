@@ -23,7 +23,6 @@ use oat\taoQtiTest\models\TestModelService;
 use oat\generis\model\data\event\ResourceUpdated;
 use oat\oatbox\event\EventManager;
 
-use function GuzzleHttp\Psr7\stream_for;
 
 /**
  *  QTI test Creator Controller.
@@ -107,7 +106,7 @@ class taoQtiTest_actions_Creator extends tao_actions_CommonModule
 
         $this->setContentHeader('application/json', 'UTF-8');
 
-        $this->response = $this->getPsrResponse()->withBody(stream_for($qtiTestService->getJsonTest($test)));
+        $this->response = $this->getPsrResponse()->withBody(\GuzzleHttp\Psr7\Utils::streamFor($qtiTestService->getJsonTest($test)));
     }
 
     /**
@@ -163,7 +162,7 @@ class taoQtiTest_actions_Creator extends tao_actions_CommonModule
         }
         $this->setContentHeader('application/json', 'UTF-8');
 
-        $this->response = $this->getPsrResponse()->withBody(stream_for(json_encode(['saved' => $saved])));
+        $this->response = $this->getPsrResponse()->withBody(\GuzzleHttp\Psr7\Utils::streamFor(json_encode(['saved' => $saved])));
     }
 
 
@@ -185,7 +184,7 @@ class taoQtiTest_actions_Creator extends tao_actions_CommonModule
         }
         $this->setContentHeader('application/json', 'UTF-8');
 
-        $this->response = $this->getPsrResponse()->withBody(stream_for(json_encode($response)));
+        $this->response = $this->getPsrResponse()->withBody(\GuzzleHttp\Psr7\Utils::streamFor(json_encode($response)));
     }
 
 
