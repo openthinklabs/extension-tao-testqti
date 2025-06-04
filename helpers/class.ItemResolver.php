@@ -57,7 +57,7 @@ class taoQtiTest_helpers_ItemResolver implements Resolver
      * @return string The path to the related QTI-XML file.
      * @throws ResolutionException If an error occurs during the resolution of $url.
      */
-    public function resolve($url)
+    public function resolve($url): string
     {
         $taoItem = new core_kernel_classes_Resource($url);
         if ($taoItem->exists() === false) {
